@@ -1,44 +1,62 @@
+import { Login } from "./Login.js";
+import { Register } from "./Register.js";
 /**
- * every page needs to refer to this js-file 
+ * every page needs to refer to this js-file
  */
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/sw.js')
-        .then((reg)=>{console.log("SW registered", reg)})
-        .catch((error)=>{console.warn("SW not registered", error)});
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/sw.js")
+    .then((reg) => {
+      console.log("SW registered", reg);
+    })
+    .catch((error) => {
+      console.warn("SW not registered", error);
+    });
 }
-const app = new myApp();
 
-class myApp{
+const stateList = {
+  Login: 1,
+  Register: 2,
+  Chat: 3,
+};
 
-    constructor() {
-        this.initAllEventListener();
-        this.initBaseVariables();
-        loginpage = pageLogin(this.getEmptyBody(), undefined);
-        document.appendChild(loginpage[0], loginpage[1]);
+window.onload = () => {
+  const loadupState = stateList.Register; // create a way to recreate last state via cache/cookies/localstorage
+  const app = new myApp(loadupState);
+};
+
+class myApp {
+  cLogin = new Login(this.updateApp);
+  // cChat = new Chat(this.updateApp);
+  cRegister = new Register(this.updateApp);
+
+  loginErrorMessage = undefined;
+  constructor(state) {
+    this.state = state;
+    this.initAllEventListener();
+    this.renderPage();
+  }
+
+  initAllEventListener() {
+    document.body.addEventListener("spaContentLoaded", this.updateApp);
+  }
+  updateApp(newState, loginerror) {
+    this.state = newState;
+    this.loginErrorMessage = loginerror;
+    this.renderPage();
+  }
+  renderPage() {
+    switch (this.state) {
+      case stateList.Login:
+        this.cLogin.loadPage(this.loginErrorMessage);
+        break;
+      case stateList.Register:
+        this.cRegister.loadPage();
+        break;
+      case stateList.Chat:
+        break;
+      default:
+        break;
     }
-
-    initAllEventListener() {
-        document.body.addEventListener('spaContentLoaded', this.updateApp);
-        
-    }
-
-    initBaseVariables(){
-        let body = document.body;
-    }
-
-    updateApp(){
-        
-    }
-
-    getEmptyBody(){
-        let content = document.querySelector(".contentContainer");
-        let menu = document.querySelector(".menu");
-
-        if(!this.loggedIn()){
-            menu.remove();
-        }
-
-        content.innerHTML = null;
-        return content;
-    }
+  }
 }

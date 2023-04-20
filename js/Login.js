@@ -1,50 +1,66 @@
-function pageLogin(c, err) {
-  // var c = this.getEmptyContent();
-  var feeldSet = this.pageLoginFeeldSet();
-  if (err) {
-    var errorMsg = this.createElement("div");
-    errorMsg.innerHTML = err;
-    c.appendChild(errorMsg);
+import { appendChild, createElement, getEmptyContent, makeInput, createButton } from "./helper.js";
+
+export class Login {
+
+  constructor(rerender){
+    this.rerender = rerender;
   }
-  return [c, [feeldSet]];
-}
 
-function pageLoginFeeldSet() {
-  var form = this.createElement("form", "content");
-  var div = this.createElement("div", "inputfield");
-  this.appendChild(form, [div]);
+  loadPage(err){
+    var c = getEmptyContent(".contentContainer");
+    var feeldSet = this.getFeeldSet();
+    if(err){
+      var errorMsg = createElement("div");
+      errorMsg.innerHTML = err;
+      c.appendChild(errorMsg);
+    }
+    appendChild(c, [feeldSet]);
+  }
 
-  const inputName = this.makeInput("text", "userId", "User ID (>5 Char)", 5);
-  const brk = this.createElement("br");
-  const inputPassword = this.makeInput(
-    "password",
-    "password",
-    "Password (>5 Char)",
-    5
-  );
+  getFeeldSet(){
+    var form = createElement("form", "content");
+    var div = createElement("div", "inputfield"); 
+    var h2Title = createElement("h2", "title_h2");
+    h2Title.innerText = "P-WAM, I gues?"
+    appendChild(form, [h2Title, div]);
 
-  this.appendChild(div, [inputName, brk, inputPassword]);
+    const inputName = makeInput("text", "userId" , "User ID (=8 Char)", 8); 
+    const brk = createElement("br");
+    const inputPassword = makeInput("password", "password", "Password (>5 Char)", 5);
+    appendChild(div, [inputName, brk, inputPassword]);
 
-  var divButton = this.createElement("div", "submitbutton");
-  var btn = this.createButton("btn", "login", "LOGIN");
+    var divButton = createElement("div", "submitbutton");
+    var btn = createButton("btn", "login", "LOGIN");
+    var regBtn = createButton("btn", "register", "REGISTER")
+    btn.setAttribute("disabled", "");
 
-  btn.setAttribute("disabled", "");
+    const btnEnabler = ()=>{
+        btn.disabled = !inputName.reportValidity() || !inputPassword.reportValidity();
+        //btn.removeAttribute("disabled");
+    };
 
-  const btnEnabler = () => {
-    btn.disabled =
-      !inputName.reportValidity() || !inputPassword.reportValidity();
-    //btn.removeAttribute("disabled");
-  };
-  inputName.addEventListener("input", btnEnabler);
-  inputPassword.addEventListener("input", btnEnabler);
 
-  btn.addEventListener("click", () => {
-    this.pageLoginSent(inputName.value, inputPassword.value);
-  });
+    inputName.addEventListener("input", btnEnabler);
+    inputPassword.addEventListener("input", btnEnabler);
 
-  this.appendChild(divButton, [btn]);
-  this.appendChild(form, [divButton]);
+    btn.addEventListener("click", ()=>{
+      this.pageLoginSent(inputName.value, inputPassword.value);
+    });
 
-  return form;
-}
+    regBtn.addEventListener("click", this.onRegister);
 
+    appendChild(divButton, [btn, regBtn]);
+    appendChild(form, [divButton]);
+
+    return form;
+  }
+
+  pageLoginSent(pw, id){
+    this.rerender(1, "I am a test error");
+  }
+
+  onRegister(){
+    console.log("rerender!")
+    this.rerender(2, undefined);
+  }
+} 
