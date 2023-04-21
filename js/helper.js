@@ -19,8 +19,7 @@ export function appendChild(parent, child){
 }
 
 export function getEmptyContent(selector){
-    const c = document.querySelector(selector);//".contentcontainer");
-    //c.classList = "contentcontainer";
+    var c = document.querySelector(selector);
     c.innerHTML = "";
     return c;
 }

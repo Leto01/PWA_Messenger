@@ -1,66 +1,72 @@
-import { appendChild, createElement, getEmptyContent, makeInput, createButton } from "./helper.js";
+import {
+  appendChild,
+  createElement,
+  getEmptyContent,
+  makeInput,
+  createButton,
+} from "./helper.js";
 
-export class Login {
+var rerender = () => {console.warn("no rerender method set")};
 
-  constructor(rerender){
-    this.rerender = rerender;
+export function loadLoginPage(callback, err) {
+  
+  rerender = callback;
+  var c = getEmptyContent(".contentContainer");
+  var feeldSet = getFeeldSet();
+  if (err) {
+    var errorMsg = createElement("div");
+    errorMsg.innerHTML = err;
+    c.appendChild(errorMsg);
   }
+  appendChild(c, [feeldSet]);
+}
 
-  loadPage(err){
-    var c = getEmptyContent(".contentContainer");
-    var feeldSet = this.getFeeldSet();
-    if(err){
-      var errorMsg = createElement("div");
-      errorMsg.innerHTML = err;
-      c.appendChild(errorMsg);
-    }
-    appendChild(c, [feeldSet]);
-  }
+function pageLoginSent(pw, id) {
+  rerender(1, "no request send to the server, implement the method nobhead ");
+}
 
-  getFeeldSet(){
-    var form = createElement("form", "content");
-    var div = createElement("div", "inputfield"); 
-    var h2Title = createElement("h2", "title_h2");
-    h2Title.innerText = "P-WAM, I gues?"
-    appendChild(form, [h2Title, div]);
+function onRegister() {
+  rerender(2, undefined);
+}
 
-    const inputName = makeInput("text", "userId" , "User ID (=8 Char)", 8); 
-    const brk = createElement("br");
-    const inputPassword = makeInput("password", "password", "Password (>5 Char)", 5);
-    appendChild(div, [inputName, brk, inputPassword]);
+function getFeeldSet() {
+  var form = createElement("form", "content");
+  var div = createElement("div", "inputfield");
+  var h2Title = createElement("h2", "title_h2");
+  h2Title.innerText = "P-WAM, I gues?";
+  appendChild(form, [h2Title, div]);
 
-    var divButton = createElement("div", "submitbutton");
-    var btn = createButton("btn", "login", "LOGIN");
-    var regBtn = createButton("btn", "register", "REGISTER")
-    btn.setAttribute("disabled", "");
+  const inputName = makeInput("text", "userId", "User ID (=8 Char)", 8);
+  const brk = createElement("br");
+  const inputPassword = makeInput(
+    "password",
+    "password",
+    "Password (>5 Char)",
+    5
+  );
+  appendChild(div, [inputName, brk, inputPassword]);
 
-    const btnEnabler = ()=>{
-        btn.disabled = !inputName.reportValidity() || !inputPassword.reportValidity();
-        //btn.removeAttribute("disabled");
-    };
+  var divButton = createElement("div", "submitbutton");
+  var btn = createButton("btn", "login", "LOGIN");
+  var regBtn = createButton("btn", "register", "REGISTER");
+  btn.setAttribute("disabled", "");
+  
+  const btnEnabler = () => {
+    btn.disabled =
+      !inputName.reportValidity() || !inputPassword.reportValidity();
+    //btn.removeAttribute("disabled");
+  };
 
+  form.addEventListener("input", btnEnabler);
 
-    inputName.addEventListener("input", btnEnabler);
-    inputPassword.addEventListener("input", btnEnabler);
+  btn.addEventListener("click", () => {
+    pageLoginSent(inputName.value, inputPassword.value);
+  });
 
-    btn.addEventListener("click", ()=>{
-      this.pageLoginSent(inputName.value, inputPassword.value);
-    });
+  regBtn.addEventListener("click", onRegister);
 
-    regBtn.addEventListener("click", this.onRegister);
+  appendChild(divButton, [btn, regBtn]);
+  appendChild(form, [divButton]);
 
-    appendChild(divButton, [btn, regBtn]);
-    appendChild(form, [divButton]);
-
-    return form;
-  }
-
-  pageLoginSent(pw, id){
-    this.rerender(1, "I am a test error");
-  }
-
-  onRegister(){
-    console.log("rerender!")
-    this.rerender(2, undefined);
-  }
-} 
+  return form;
+}

@@ -1,22 +1,19 @@
 import { getEmptyContent, appendChild, createElement, makeInput, createButton } from "./helper.js";
 
-export class Register{
 
-    rerender = (val, vale)=>{
-        console.log("no override here :D")
-    };
 
-    constructor(callback) {
-        this.rerender = callback;
-    }
+    var rerender = () => {console.warn("no rerender method set")};
+
   
-    loadPage(){
+    export function loadRegisterPage(callback){
+        rerender = callback
         var c = getEmptyContent(".contentContainer");
-        var feeldSet = this.getFeeldSet();
+        
+        var feeldSet = getFeeldSet();
         appendChild(c, [feeldSet]);
     }
 
-    getFeeldSet(){
+    function getFeeldSet(){
         var form = createElement("from", "content");
         var div = createElement("div", "inputfield");
         var h3Title = createElement("h3", "title_h3");
@@ -31,27 +28,26 @@ export class Register{
     
         var divButton = createElement("div", "submitbutton");
         var btn = createButton("btn", "register", "REGISTER");
+        var returnToLogin = createButton("btn", "return", "RETURN TO LOGIN");
+        returnToLogin.addEventListener("click", ()=>{rerender(1, undefined)});
 
         btn.setAttribute("disabled", "");
         
         const btnEnabler = ()=>{
             btn.disabled = !inputName.reportValidity() || !inputPassword.reportValidity() || (inputPassword.value !== inputPasswordRepeat.value);
-            //btn.removeAttribute("disabled");
         };
     
-        inputName.addEventListener("input", btnEnabler);
-        inputPassword.addEventListener("input", btnEnabler);
-    
+        form.addEventListener("input", btnEnabler);
+        
         btn.addEventListener("click", ()=>{
-          this.pageRegisterSent(inputName.value, inputPassword.value);
+          pageRegisterSent(inputName.value, inputPassword.value);
         }); 
 
-        appendChild(divButton, [btn])
+        appendChild(divButton, [btn, returnToLogin])
         appendChild(form, [divButton]);
         return form;
     }
 
-    pageRegisterSent(name, pw){
-        this.rerender(1, undefined);
+    function pageRegisterSent(name, pw){
+        rerender(1, "no registration possible nobhead");
     }
-  } 
