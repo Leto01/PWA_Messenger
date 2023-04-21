@@ -26,12 +26,12 @@ export function getEmptyContent(selector){
 
 export function makeInput(t, n, ph, minLen){
     const input = createElement("input");
-    input.placeholder = ph;
-    input.type = t;
-    input.name = n;
+    ph?input.placeholder = ph:undefined;
+    t?input.type = t:undefined;
+    n?input.name = n:undefined;
     //input.minlength = minLen;
     // input.required;
-    input.setAttribute("minlength", minLen);
+    minLen?input.setAttribute("minlength", minLen):undefined;
     input.setAttribute("required", "");
     return input;
 }
@@ -41,4 +41,10 @@ export function createButton(className, name, textContent){
     b.name = name;
     b.innerText = textContent;
     return b;
+}
+
+export function createHeadder(children){
+    var header = createElement("header");
+    appendChild(header,[children]);
+    return header;
 }

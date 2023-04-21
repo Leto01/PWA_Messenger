@@ -1,9 +1,7 @@
 // import Login from "./Login.js";
 import { loadRegisterPage } from "./Register.js";
-import {
-  loadLoginPage
-} from "./Login.js";
-import { getEmptyContent } from "./helper.js";
+import { loadLoginPage } from "./Login.js";
+import { loadChatPage } from "./chat.js";
 /**
  * every page needs to refer to this js-file
  */
@@ -51,48 +49,9 @@ function renderPage() {
       loadRegisterPage(updateApp);
       break;
     case stateList.Chat:
+      loadChatPage(updateApp);
       break;
     default:
       break;
   }
 }
-
-
-
-
-// class myApp {
-//   cLogin = new Login(this.updateApp);
-//   // cChat = new Chat(this.updateApp);
-//   cRegister = new Register(this.updateApp);
-
-//   loginErrorMessage = undefined;
-//   constructor(state) {
-//     this.state = state;
-//     this.initAllEventListener();
-//     this.renderPage();
-//   }
-
-//   initAllEventListener() {
-//     document.body.addEventListener("spaContentLoaded", this.updateApp);
-//   }
-//   updateApp(newState, loginerror) {
-//     this.state = newState;
-//     this.loginErrorMessage = loginerror;
-//     console.log(this.state);
-//     this.renderPage();
-//   }
-//   renderPage() {
-//     switch (this.state) {
-//       case stateList.Login:
-//         this.cLogin.loadPage(this.loginErrorMessage);
-//         break;
-//       case stateList.Register:
-//         this.cRegister.loadPage();
-//         break;
-//       case stateList.Chat:
-//         break;
-//       default:
-//         break;
-//     }
-//   }
-// }

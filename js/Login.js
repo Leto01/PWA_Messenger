@@ -9,7 +9,6 @@ import {
 var rerender = () => {console.warn("no rerender method set")};
 
 export function loadLoginPage(callback, err) {
-  
   rerender = callback;
   var c = getEmptyContent(".contentContainer");
   var feeldSet = getFeeldSet();
@@ -22,7 +21,7 @@ export function loadLoginPage(callback, err) {
 }
 
 function pageLoginSent(pw, id) {
-  rerender(1, "no request send to the server, implement the method nobhead ");
+  rerender(3, undefined);
 }
 
 function onRegister() {
@@ -30,7 +29,7 @@ function onRegister() {
 }
 
 function getFeeldSet() {
-  var form = createElement("form", "content");
+  var form = createElement("form", "content login");
   var div = createElement("div", "inputfield");
   var h2Title = createElement("h2", "title_h2");
   h2Title.innerText = "P-WAM, I gues?";

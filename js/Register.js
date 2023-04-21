@@ -14,22 +14,24 @@ import { getEmptyContent, appendChild, createElement, makeInput, createButton } 
     }
 
     function getFeeldSet(){
-        var form = createElement("from", "content");
+        var form = createElement("form", "content register");
         var div = createElement("div", "inputfield");
         var h3Title = createElement("h3", "title_h3");
         h3Title.innerText = "Register here";
         appendChild(form, [h3Title, div]);
 
-        const inputName = makeInput("text", "userId" , "User ID (=8 Char)", 8); 
+        const inputName = makeInput("text", "userId" , "HS-ID (=8 Char)", 8); 
+        const inputFullName = makeInput("text", "fullName", "Full Name", 1); 
+        const inputNickName = makeInput("text", "nickname", "Nickname", 1); 
         const brk = createElement("br");
         const inputPassword = makeInput("password", "password", "Password (>5 Char)", 5);
         const inputPasswordRepeat = makeInput("password", "password", "Repeat Password", 5)
-        appendChild(div, [inputName, brk, inputPassword, inputPasswordRepeat]);
+        appendChild(div, [inputName, inputFullName, inputNickName, inputPassword, inputPasswordRepeat]);
     
         var divButton = createElement("div", "submitbutton");
         var btn = createButton("btn", "register", "REGISTER");
         var returnToLogin = createButton("btn", "return", "RETURN TO LOGIN");
-        returnToLogin.addEventListener("click", ()=>{rerender(1, undefined)});
+        returnToLogin.addEventListener("click", ()=>{rerender(1, undefined)}, false);
 
         btn.setAttribute("disabled", "");
         
