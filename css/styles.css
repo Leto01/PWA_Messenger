@@ -76,6 +76,10 @@ header{
     background-color: #9991C9;
     width: 100%;
     color: #F9F9F9;
+    
+}
+
+.chatHeaderDiv{
     text-shadow: none;
     display: flex;
     flex-direction: row;
