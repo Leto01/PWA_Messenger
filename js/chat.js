@@ -39,7 +39,7 @@ function logout(){
 function getChatMessageBox(){
   var form = createElement("form", "messageBox");
   var messageInput = createElement("input");
-  var sendBtn = createButton("btn", "sendbutton", "SEND")
+  var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "SEND")
   appendChild(form, [messageInput, sendBtn]);
   return form;
 }

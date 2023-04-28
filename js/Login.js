@@ -32,7 +32,7 @@ function getFeeldSet() {
   var form = createElement("form", "content login");
   var div = createElement("div", "inputfield");
   var h2Title = createElement("h2", "title_h2");
-  h2Title.innerText = "P-WAM, I gues?";
+  h2Title.innerText = "P-WAM";
   appendChild(form, [h2Title, div]);
 
   const inputName = makeInput("text", "userId", "User ID (=8 Char)", 8);
