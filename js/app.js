@@ -7,6 +7,12 @@ import { ENUM_SET } from "./helper.js";
 /**
  * every page needs to refer to this js-file
  */
+
+var loginErrorMessage = undefined;
+var state = ENUM_SET.STATES.Login;
+
+if(getCookie(ENUM_SET.COOKIE_SET.token) !== "") state = getCookie(ENUM_SET.COOKIE_SET.state);
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/sw.js")
@@ -17,15 +23,6 @@ if ("serviceWorker" in navigator) {
       console.warn("SW not registered", error);
     });
 }
-
-const stateList = {
-  Login: 1,
-  Register: 2,
-  Chat: 3,
-};
-
-var loginErrorMessage = undefined;
-var state = getCookie(ENUM_SET.COOKIE_SET.state); //fetch from cache later on
 
 window.onload = () => {
   initApp();
