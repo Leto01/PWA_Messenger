@@ -1,6 +1,7 @@
 import { fetchmessage, logout, sendmessage } from "./chat.service.js";
 import { getCookie } from "./cookie.service.js";
 import {
+  ENUM_SET,
   appendChild,
   createButton,
   createElement,
@@ -12,27 +13,28 @@ var rerender = () => {
   console.warn("no rerender method set");
 };
 
-const testMyHash = getCookie("hash");
+const testMyHash = getCookie(ENUM_SET.COOKIE_SET.token);
 const messageSet = { messages: [] };
 var myUserName = "";
 var chatId = 0;
 var errorSend = false;
+const d = new Date();
 export function loadChatPage(callback) {
   rerender = callback;
   var c = getEmptyContent(".contentContainer");
   var messageBox = getChatMessageBox();
   var messageView = getMessageView();
-  
+
   var headercontent = initHeader();
   var header = createHeadder(headercontent);
   appendChild(c, [header, messageView, messageBox]);
 }
 
-function scrollDown(){
+function scrollDown() {
   const element = document.getElementsByClassName("messageview")[0];
-  console.log(element.scrollTop)
+  console.log(element.scrollTop);
   element.scrollTop = element.scrollHeight;
-  console.log(element.scrollTop)
+  console.log(element.scrollTop);
 }
 
 function initHeader() {
@@ -54,10 +56,10 @@ function initHeader() {
 }
 
 function onLogout() {
-  const token = getCookie("token");
+  const token = getCookie(ENUM_SET.COOKIE_SET.token);
   logout(token)
     .then(() => {
-      rerender(1, undefined);
+      rerender(ENUM_SET.STATES.Login, undefined);
     })
     .catch(console.error);
 }
@@ -70,44 +72,52 @@ function getChatMessageBox() {
   sendBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (messageInput.value.trim() !== "") {
-      sendmessage(messageInput.value, getCookie("token"))
+      sendmessage(messageInput.value, getCookie(ENUM_SET.COOKIE_SET.token))
         .then((r) =>
           r
             .json()
             .then((data) => {
               errorSend = data.code !== 200;
               const msgObj = {
-                id: 12,
-                userhash: getCookie("hash"),
+                id: messageSet.messages[messageSet.messages.length],
+                userhash: getCookie(ENUM_SET.COOKIE_SET.hash),
                 usernickname: myUserName,
-                message: messageInput.value,
-                time: Date.now().toString(),
+                text: messageInput.value,
+                time: formatTime(),
                 chatid: chatId,
               };
+              messageInput.value = "";
               messageSet.messages.push(msgObj);
               appendNewSendMessage(msgObj);
-              messageInput.value;
             })
             .catch(console.error)
         )
         .catch(console.error); // save request and resend later
-        messageInput.value = "";
     }
   });
   appendChild(form, [messageInput, sendBtn]);
   return form;
 }
 
+function formatTime(time) {
+  if (time === undefined) {
+    var h = d.getHours();
+    var m = d.getMinutes();
+    return "today: " + (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
+  }
+
+}
+
 function appendNewSendMessage(msg) {
   const div = document.getElementsByClassName("messageview");
-  appendChild(div[0], [displayMessage(msg)])
+  appendChild(div[0], [displayMessage(msg)]);
   scrollDown();
 }
 
 function getMessageView() {
   var messageViewDiv = createElement("div", "messageview");
 
-  fetchmessage(getCookie("token"))
+  fetchmessage(getCookie(ENUM_SET.COOKIE_SET.token))
     .then((r) =>
       r
         .json()
@@ -120,7 +130,6 @@ function getMessageView() {
         })
         .catch((err) => {
           console.warn(err);
-          console.warn("Error decoding fetchMessages");
         })
     )
     .catch(console.warn);
@@ -132,9 +141,8 @@ function displayMessage(oMessage) {
   var isMe = oMessage.userhash === testMyHash;
   chatId = oMessage.chatId;
   if (isMe) {
-    myUserName = oMessage.userName;
+    myUserName = oMessage.usernickname;
   }
-
   var messageContainer = createElement(
     "div",
     "message" + (isMe ? " mine" : "")
@@ -145,7 +153,7 @@ function displayMessage(oMessage) {
   );
   userName.innerText = oMessage.usernickname;
   var msg = createElement("p");
-  msg.innerText = oMessage.text?oMessage.text:"No messege here (ツ)_/¯ ";
+  msg.innerText = oMessage.text ? oMessage.text : "No messege here (ツ)_/¯ ";
   var timestmp = createElement("p");
   timestmp.innerText = oMessage.time;
 

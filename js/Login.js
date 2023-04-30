@@ -6,6 +6,7 @@ import {
   getEmptyContent,
   makeInput,
   createButton,
+  ENUM_SET,
 } from "./helper.js";
 
 var rerender = () => {
@@ -29,23 +30,20 @@ function pageLoginSent(pw, id) {
   login(id, pw)
     .then((r) =>
       r.json().then((data) => {
-        var myToken = data.token;
-        setNewCookie("token", data.token);
-        setNewCookie("hash", data.hash);
-        console.log(data.token);
-        console.log(data.hash);
-        rerender(3, undefined);
+        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token);
+        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash);
+         rerender(ENUM_SET.STATES.Chat, undefined);
       })
     )
     .catch((err) => {
       console.error(err);
-      rerender(1, err);
+      rerender(ENUM_SET.STATES.Login, err);
     });
 }
 
 function onRegister(e) {
   e.preventDefault();
-  rerender(2, undefined);
+  rerender(ENUM_SET.STATES.Register, undefined);
 }
 
 function getFeeldSet() {

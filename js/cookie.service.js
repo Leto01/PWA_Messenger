@@ -1,5 +1,6 @@
 
-export function setNewCookie(key, value) {
+export function setNewCookie(key, value, expirationDate) {
+  
   document.cookie = `${key}=${value}`;
 }
 

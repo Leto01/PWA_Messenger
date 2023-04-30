@@ -2,6 +2,8 @@
 import { loadRegisterPage } from "./Register.js";
 import { loadLoginPage } from "./Login.js";
 import { loadChatPage } from "./chat.js";
+import { getCookie, setNewCookie } from "./cookie.service.js";
+import { ENUM_SET } from "./helper.js";
 /**
  * every page needs to refer to this js-file
  */
@@ -23,7 +25,7 @@ const stateList = {
 };
 
 var loginErrorMessage = undefined;
-var state = stateList.Chat; //fetch from cache later on
+var state = getCookie(ENUM_SET.COOKIE_SET.state); //fetch from cache later on
 
 window.onload = () => {
   initApp();
@@ -35,6 +37,7 @@ function initApp() {
 }
 
 function updateApp(newState, loginerror) {
+  setNewCookie(ENUM_SET.COOKIE_SET.state, newState);
   state = newState;
   loginErrorMessage = loginerror;
   renderPage();
@@ -42,16 +45,17 @@ function updateApp(newState, loginerror) {
 
 function renderPage() {
   switch (state) {
-    case stateList.Login:
+    case ENUM_SET.STATES.Login:
       loadLoginPage(updateApp, loginErrorMessage);
       break;
-    case stateList.Register:
+    case ENUM_SET.STATES.Register:
       loadRegisterPage(updateApp);
       break;
-    case stateList.Chat:
+    case ENUM_SET.STATES.Chat:
       loadChatPage(updateApp);
       break;
     default:
+      loadLoginPage(updateApp, loginErrorMessage);
       break;
   }
 }
