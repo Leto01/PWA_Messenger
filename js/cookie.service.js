@@ -1,7 +1,10 @@
-
-export function setNewCookie(key, value, expirationDate) {
-  
-  document.cookie = `${key}=${value}`;
+export function setNewCookie(key, value, expireInDays) {
+  var d = "";
+  const date = new Date();
+  if(expireInDays){
+  date.setTime(date.getTime() + (expireInDays * 24*60*60*1000));
+  d = "expires=" + date.toUTCString();}
+  document.cookie = `${key}=${value}` + (expireInDays ? ";" + d + ";path=/" : "");
 }
 
 export function getCookie(cname) {
@@ -18,4 +21,8 @@ export function getCookie(cname) {
     }
   }
   return "";
+}
+
+export function deleteCookie(name) {
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }

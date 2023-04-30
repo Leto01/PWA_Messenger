@@ -1,5 +1,5 @@
 import { fetchmessage, logout, sendmessage } from "./chat.service.js";
-import { getCookie } from "./cookie.service.js";
+import { deleteCookie, getCookie } from "./cookie.service.js";
 import {
   ENUM_SET,
   appendChild,
@@ -13,12 +13,13 @@ var rerender = () => {
   console.warn("no rerender method set");
 };
 
-const testMyHash = getCookie(ENUM_SET.COOKIE_SET.token);
+const testMyHash = getCookie(ENUM_SET.COOKIE_SET.hash);
 const messageSet = { messages: [] };
 var myUserName = "";
 var chatId = 0;
 var errorSend = false;
 const d = new Date();
+
 export function loadChatPage(callback) {
   rerender = callback;
   var c = getEmptyContent(".contentContainer");
@@ -59,6 +60,8 @@ function onLogout() {
   const token = getCookie(ENUM_SET.COOKIE_SET.token);
   logout(token)
     .then(() => {
+      deleteCookie(ENUM_SET.COOKIE_SET.hash);
+      deleteCookie(ENUM_SET.COOKIE_SET.token)
       rerender(ENUM_SET.STATES.Login, undefined);
     })
     .catch(console.error);

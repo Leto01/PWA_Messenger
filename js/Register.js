@@ -92,9 +92,9 @@ function pageRegisterSent(id, fullName, nickname, pw) {
   register(id, pw, nickname, fullName).then((res) =>
     res.json().then((data) => {
       if (data.code === 200) {
-        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token);
-        setNewCookie(ENUM_SET.COOKIE_SET.username, nickname);
-        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash);
+        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
+        setNewCookie(ENUM_SET.COOKIE_SET.username, nickname, 1);
+        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
         rerender(ENUM_SET.STATES.Chat, undefined);
       } else {
 

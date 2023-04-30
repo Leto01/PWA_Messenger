@@ -37,7 +37,7 @@ function initApp() {
 }
 
 function updateApp(newState, loginerror) {
-  setNewCookie(ENUM_SET.COOKIE_SET.state, newState);
+  setNewCookie(ENUM_SET.COOKIE_SET.state, newState, 10);
   state = newState;
   loginErrorMessage = loginerror;
   renderPage();

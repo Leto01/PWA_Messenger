@@ -30,9 +30,9 @@ function pageLoginSent(pw, id) {
   login(id, pw)
     .then((r) =>
       r.json().then((data) => {
-        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token);
-        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash);
-         rerender(ENUM_SET.STATES.Chat, undefined);
+        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
+        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
+        rerender(ENUM_SET.STATES.Chat, undefined);
       })
     )
     .catch((err) => {
