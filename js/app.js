@@ -23,14 +23,14 @@ const stateList = {
 };
 
 var loginErrorMessage = undefined;
-var state = stateList.Login; //fetch from cache later on
+var state = stateList.Chat; //fetch from cache later on
 
 window.onload = () => {
   initApp();
 };
 
 function initApp() {
-  document.body.addEventListener("spaContentLoaded", updateApp);
+  document.body.addEventListener("spaContentLoaded", console.log);
   renderPage()
 }
 

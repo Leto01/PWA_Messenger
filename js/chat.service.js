@@ -1,57 +1,65 @@
-const BASE_URL = 'https://www2.hs-esslingen.de/~melcher/map/chat/api/'
-const query = "request=test"
-const token = "s";
+const BASE_URL = "https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php";
+const requestOptions = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: ""
+};
 
-export async function login (userid, password) {
-    const body = JSON.stringify({
-        request: 'login',
-        userid: userid,
-        password: password
-      });
-    return await fetch(BASE_URL, body);
+const makeFetch = async (body) => {
+    requestOptions.body = JSON.stringify(body);
+    return await fetch(BASE_URL, requestOptions);
 }
 
-export async function logout (token) {
-    const body = JSON.stringify({
-        request: 'logout',
-        token: token
-      });
-    return await fetch(BASE_URL, body);
+export async function login(userid, password) {
+  const body = {
+    request: "login",
+    userid: userid,
+    password: password,
+  };
+  return await makeFetch(body);
 }
 
-export async function register (id, pw, nickname, fullname) {
-    const body = JSON.stringify({
-        request: 'register',
-        userid: id,
-        password: pw,
-        nickname: nickname,
-        fullname: fullname
-      });
-    return await fetch(BASE_URL, body);
+export async function logout(token) {
+  const body = JSON.stringify({
+    request: "logout",
+    token: token,
+  });
+  return await makeFetch(body);
 }
 
-export async function deregister (token) {
-    //TODO
-    const body = JSON.stringify({
-        request: 'deregister',
-        token: token
-      });
-    return await fetch(BASE_URL, POST);
+export async function register(id, pw, nickname, fullname) {
+  const body ={
+    request: "register",
+    userid: id,
+    password: pw,
+    nickname: nickname,
+    fullname: fullname,
+  };
+  return await makeFetch(body);
 }
 
-export async function sendmessage (msg, token) {
-    const body = JSON.stringify({
-        request: 'sendmessage',
-        token: token,
-        text: msg
-      });
-    return await fetch(BASE_URL, body);
+export async function deregister(token) {
+  //TODO
+  const body ={
+    request: "deregister",
+    token: token,
+  };
+  return await makeFetch(body);
 }
 
-export async function fetchmessage (token) {
-    const body = JSON.stringify({
-        request: 'fetchmessages',
-        token: token
-      });
-    return await fetch(BASE_URL, body);
+export async function sendmessage(msg, token) {
+  const body = {
+    request: "sendmessage",
+    token: token,
+    text: msg,
+  };
+  return await makeFetch(body);
+}
+
+export async function fetchmessage(token) {
+  const body = {
+    request: "fetchmessages",
+    token: token,
+  };
+  return await makeFetch(body);
 }

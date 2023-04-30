@@ -1,3 +1,5 @@
+import { login } from "./chat.service.js";
+import { setNewCookie } from "./cookie.service.js";
 import {
   appendChild,
   createElement,
@@ -6,7 +8,9 @@ import {
   createButton,
 } from "./helper.js";
 
-var rerender = () => {console.warn("no rerender method set")};
+var rerender = () => {
+  console.warn("no rerender method set");
+};
 
 export function loadLoginPage(callback, err) {
   rerender = callback;
@@ -21,10 +25,26 @@ export function loadLoginPage(callback, err) {
 }
 
 function pageLoginSent(pw, id) {
-  rerender(3, undefined);
+  console.log("call Login:");
+  login(id, pw)
+    .then((r) =>
+      r.json().then((data) => {
+        var myToken = data.token;
+        setNewCookie("token", data.token);
+        setNewCookie("hash", data.hash);
+        console.log(data.token);
+        console.log(data.hash);
+        rerender(3, undefined);
+      })
+    )
+    .catch((err) => {
+      console.error(err);
+      rerender(1, err);
+    });
 }
 
-function onRegister() {
+function onRegister(e) {
+  e.preventDefault();
   rerender(2, undefined);
 }
 
@@ -49,8 +69,9 @@ function getFeeldSet() {
   var btn = createButton("btn", "login", "LOGIN");
   var regBtn = createButton("btn", "register", "REGISTER");
   btn.setAttribute("disabled", "");
-  
-  const btnEnabler = () => {
+
+  const btnEnabler = (e) => {
+    e.preventDefault();
     btn.disabled =
       !inputName.reportValidity() || !inputPassword.reportValidity();
     //btn.removeAttribute("disabled");
@@ -58,8 +79,9 @@ function getFeeldSet() {
 
   form.addEventListener("input", btnEnabler);
 
-  btn.addEventListener("click", () => {
-    pageLoginSent(inputName.value, inputPassword.value);
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    pageLoginSent(inputPassword.value, inputName.value);
   });
 
   regBtn.addEventListener("click", onRegister);
