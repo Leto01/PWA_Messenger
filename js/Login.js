@@ -25,14 +25,23 @@ export function loadLoginPage(callback, err) {
   appendChild(c, [feeldSet]);
 }
 
+function validateLoginResponse(data) {
+  const status = data.status;
+  if (status != "error") {
+    setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
+    setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
+    rerender(ENUM_SET.STATES.Chat, undefined);
+  } else {
+    rerender(ENUM_SET.STATES.Login, data.message);
+  }
+}
+
 function pageLoginSent(pw, id) {
   console.log("call Login:");
   login(id, pw)
     .then((r) =>
       r.json().then((data) => {
-        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
-        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
-        rerender(ENUM_SET.STATES.Chat, undefined);
+        validateLoginResponse(data);
       })
     )
     .catch((err) => {
