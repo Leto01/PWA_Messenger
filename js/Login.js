@@ -22,7 +22,7 @@ export function loadLoginPage(callback, err) {
     errorMsg.innerHTML = err;
     c.appendChild(errorMsg);
   }
-  appendChild(c, [feeldSet]);
+  appendChild(c, [LoginAdd(),feeldSet]);
 }
 
 function validateLoginResponse(data) {
@@ -97,4 +97,10 @@ function getFeeldSet() {
   appendChild(form, [divButton]);
 
   return form;
+}
+
+function LoginAdd () {
+  let div = createElement("h4", "addBaner");
+  div.innerText = "Use P-WAM for messaging your mates from class"
+  return div; 
 }

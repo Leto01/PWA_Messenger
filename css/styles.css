@@ -125,7 +125,7 @@ header{
     position: fixed;
     height: fit-content;
     left: 50%;
-transform: translate(-50%);
+    transform: translate(-50%);
     width: 60%;
     box-sizing: border-box;
     min-height: calc(100vh-40px);
@@ -139,8 +139,7 @@ transform: translate(-50%);
     box-shadow: -5px -5px 20px #fff, 5px 5px 20px #9991C9;
     border-radius: 8px;
     word-break: break-word;
-    max-width: 600px;
-    min-width: 300px;
+    width: 500px;
     margin-left: 8px;
 }
 .mine{
@@ -149,4 +148,28 @@ transform: translate(-50%);
 
 .errorSend{
     color: red;
+}
+
+.addBaner{
+    
+    word-break: break-word;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid #9991C9; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em; /* Adjust as needed */
+    animation: 
+      typing 3.5s steps(40, end),
+      blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 488px }
+}
+  
+  /* The typewriter cursor effect */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #9991C9; }
 }
