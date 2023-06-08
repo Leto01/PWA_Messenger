@@ -30,7 +30,7 @@ function validateLoginResponse(data) {
   if (status != "error") {
     setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
     setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
-    rerender(ENUM_SET.STATES.Chat, undefined);
+    rerender(ENUM_SET.STATES.Chat, undefined, data.hash);
   } else {
     rerender(ENUM_SET.STATES.Login, data.message);
   }

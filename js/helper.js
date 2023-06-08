@@ -54,7 +54,7 @@ export const ENUM_SET = {
     token: "token",
     username: "userName",
     hash: "hash",
-    state:"state"
+    state: "state"
   },
   STATES: {
     Login: 1,

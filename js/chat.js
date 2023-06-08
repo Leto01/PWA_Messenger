@@ -13,14 +13,15 @@ var rerender = () => {
   console.warn("no rerender method set");
 };
 
-const testMyHash = getCookie(ENUM_SET.COOKIE_SET.hash);
+let testMyHash = getCookie(ENUM_SET.COOKIE_SET.hash);
 const messageSet = { messages: [] };
 var myUserName = "";
 var chatId = 0;
 var errorSend = false;
 const d = new Date();
 
-export function loadChatPage(callback) {
+export function loadChatPage(callback, uhash) {
+  testMyHash = uhash;
   rerender = callback;
   var c = getEmptyContent(".contentContainer");
   var messageBox = getChatMessageBox();
@@ -125,6 +126,7 @@ function getMessageView() {
       r
         .json()
         .then((data) => {
+          console.log(data.messages)
           messageSet.messages = data.messages;
           messageSet.messages.forEach((m) => {
             appendChild(messageViewDiv, [displayMessage(m)]);

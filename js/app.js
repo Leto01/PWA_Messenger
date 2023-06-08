@@ -9,7 +9,7 @@ import { ENUM_SET } from "./helper.js";
  */
 
 var loginErrorMessage = undefined;
-var state = ENUM_SET.STATES.Login;
+var state = getCookie("state")||ENUM_SET.STATES.Login;
 
 if(getCookie(ENUM_SET.COOKIE_SET.token) !== "") state = getCookie(ENUM_SET.COOKIE_SET.state);
 
@@ -33,14 +33,14 @@ function initApp() {
   renderPage()
 }
 
-function updateApp(newState, loginerror) {
+function updateApp(newState, loginerror, userhash) {
   setNewCookie(ENUM_SET.COOKIE_SET.state, newState, 10);
   state = newState;
   loginErrorMessage = loginerror;
-  renderPage();
+  renderPage(userhash);
 }
 
-function renderPage() {
+function renderPage(userhash) {
   switch (state) {
     case ENUM_SET.STATES.Login:
       loadLoginPage(updateApp, loginErrorMessage);
@@ -49,7 +49,7 @@ function renderPage() {
       loadRegisterPage(updateApp);
       break;
     case ENUM_SET.STATES.Chat:
-      loadChatPage(updateApp);
+      loadChatPage(updateApp, userhash);
       break;
     default:
       loadLoginPage(updateApp, loginErrorMessage);
