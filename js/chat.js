@@ -1,4 +1,4 @@
-import { fetchmessage, logout, sendmessage } from "./chat.service.js";
+import { fetchPhoto, fetchmessage, logout, sendmessage } from "./chat.service.js";
 import { deleteCookie, getCookie } from "./cookie.service.js";
 import {
   ENUM_SET,
@@ -66,9 +66,9 @@ function onLogout() {
     .catch(console.error);
 }
 
-function cleanCache(errorMsg, success=false) {
+function cleanCache(errorMsg, success = false) {
   deleteCookie(ENUM_SET.COOKIE_SET.hash);
-  deleteCookie(ENUM_SET.COOKIE_SET.token)
+  deleteCookie(ENUM_SET.COOKIE_SET.token);
   rerender(ENUM_SET.STATES.Login, errorMsg, undefined, "Logout success");
 }
 
@@ -113,7 +113,6 @@ function formatTime(time) {
     var m = d.getMinutes();
     return "today: " + (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
   }
-
 }
 
 function appendNewSendMessage(msg) {
@@ -124,7 +123,7 @@ function appendNewSendMessage(msg) {
 
 function getMessageView() {
   var messageViewDiv = createElement("div", "messageview");
-
+  
   fetchmessage(getCookie(ENUM_SET.COOKIE_SET.token))
     .then((r) => {
       if (r.status == ENUM_SET.STATES.falsyToken) {
@@ -135,19 +134,43 @@ function getMessageView() {
           .then((data) => {
             messageSet.messages = data.messages;
             messageSet.messages.forEach((m) => {
+              if (m.photoid) {
+                fetchPhoto(m.photoid, getCookie(ENUM_SET.COOKIE_SET.token)).then(res=>{return res.text()})
+                .then( res => {
+                  const url =  "https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getphoto&token=" + getCookie(ENUM_SET.COOKIE_SET.token) + "&photoid=" + m.photoid;
+                  console.log(url)
+                  m.imgUrl = url;
+                  addImageToMessage(m);
+                })
+              }
+            });
+            messageSet.messages.forEach((m) => {
               appendChild(messageViewDiv, [displayMessage(m)]);
             });
             scrollDown();
           })
           .catch((err) => {
             console.warn(err);
-          })
+    })
       }
     }
     )
     .catch(console.warn);
 
   return messageViewDiv;
+}
+
+function addImageToMessage (mObj) {
+  const id = mObj.id;
+  let e = document.getElementById("c"+id);
+  e.innerHTML = '';
+  let img = createElement("img", "messageImage");
+  var msg = createElement("p");
+  msg.innerText = mObj.text ? mObj.text : "";
+  img.setAttribute("src", mObj.imgUrl);
+  img.setAttribute("alt", "photo");
+  img.setAttribute("width", "100%")
+  appendChild(e, [img, msg]);
 }
 
 function displayMessage(oMessage) {
@@ -160,16 +183,19 @@ function displayMessage(oMessage) {
     "div",
     "message" + (isMe ? " mine" : "")
   );
+  messageContainer.setAttribute("id", oMessage.id);
   var userName = createElement(
     "h4",
     "username" + (errorSend ? " errorSend" : "")
   );
   userName.innerText = oMessage.usernickname;
+  var msgContainer = createElement("div");
+  msgContainer.setAttribute("id", "c"+oMessage.id)
   var msg = createElement("p");
-  msg.innerText = oMessage.text ? oMessage.text : "No messege here (ツ)_/¯ ";
+  msg.innerText = oMessage.text ? oMessage.text : "";
   var timestmp = createElement("p");
   timestmp.innerText = oMessage.time;
-
-  appendChild(messageContainer, [userName, msg, timestmp]);
+  appendChild(msgContainer, [msg]);
+  appendChild(messageContainer, [userName, msgContainer, timestmp]);
   return messageContainer;
 }

@@ -63,3 +63,16 @@ export async function fetchmessage(token) {
   };
   return makeFetch(body);
 }
+
+export async function fetchPhoto(photoId, token){
+  const body = {
+    request: "fetchphoto",
+    token: token,
+    photoid: photoId 
+  }
+  requestOptions.body = JSON.stringify(body);
+  const customHeaderForBlob = {...requestOptions,
+    "responseType": "blob"
+  };
+  return fetch(BASE_URL, customHeaderForBlob);
+}

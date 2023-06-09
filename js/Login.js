@@ -19,7 +19,7 @@ export function loadLoginPage(callback, err, successLogout) {
   var feeldSet = getFeeldSet();
   if (err) {
     var errorMsg = createElement("div", "errorMsg");
-    errorMsg.innerHTML = err;
+    errorMsg.innerHTML = "Username or password is wrong";
     c.appendChild(errorMsg);
   }
   if (successLogout){
@@ -70,12 +70,12 @@ function getFeeldSet() {
   h2Title.innerText = "P-WAM";
   appendChild(form, [h2Title, div]);
 
-  const inputName = makeInput("text", "userId", "User ID (=8 Char)", 8);
+  const inputName = makeInput("text", "userId", "User ID", 8);
   const brk = createElement("br");
   const inputPassword = makeInput(
     "password",
     "password",
-    "Password (>5 Char)",
+    "Password",
     5
   );
   appendChild(div, [inputName, brk, inputPassword]);
