@@ -7,7 +7,7 @@ const requestOptions = {
 
 const makeFetch = async (body) => {
     requestOptions.body = JSON.stringify(body);
-    return await fetch(BASE_URL, requestOptions);
+    return fetch(BASE_URL, requestOptions);
 }
 
 export async function login(userid, password) {
@@ -61,5 +61,5 @@ export async function fetchmessage(token) {
     request: "fetchmessages",
     token: token,
   };
-  return await makeFetch(body);
+  return makeFetch(body);
 }

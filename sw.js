@@ -36,8 +36,8 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-  console.log(e.request)
-  console.log("Fetching detected");
+  // console.log(e.request)
+  // console.log("Fetching detected");
   if (e.request.url.indexOf("www2.hs-esslingen.de") > -1) return;
   if (e.request.url.indexOf("chrome-extension") > -1) return;
   if (e.request.url.indexOf(location.host) == -1) return;

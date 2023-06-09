@@ -13,16 +13,21 @@ var rerender = () => {
   console.warn("no rerender method set");
 };
 
-export function loadLoginPage(callback, err) {
+export function loadLoginPage(callback, err, successLogout) {
   rerender = callback;
   var c = getEmptyContent(".contentContainer");
   var feeldSet = getFeeldSet();
   if (err) {
-    var errorMsg = createElement("div");
+    var errorMsg = createElement("div", "errorMsg");
     errorMsg.innerHTML = err;
     c.appendChild(errorMsg);
   }
-  appendChild(c, [LoginAdd(),feeldSet]);
+  if (successLogout){
+    var successMsg = createElement("div", "successLogout");
+    successMsg.innerHTML = successLogout;
+    c.appendChild(successMsg);
+  }
+  appendChild(c, [LoginAdd(), feeldSet]);
 }
 
 function validateLoginResponse(data) {
@@ -39,10 +44,13 @@ function validateLoginResponse(data) {
 function pageLoginSent(pw, id) {
   console.log("call Login:");
   login(id, pw)
-    .then((r) =>
+    .then((r) => {
+      console.log(r)
       r.json().then((data) => {
+        console.log(data)
         validateLoginResponse(data);
       })
+    }
     )
     .catch((err) => {
       console.error(err);
@@ -99,8 +107,8 @@ function getFeeldSet() {
   return form;
 }
 
-function LoginAdd () {
+function LoginAdd() {
   let div = createElement("h4", "addBaner");
   div.innerText = "Use P-WAM for messaging your mates from class"
-  return div; 
+  return div;
 }

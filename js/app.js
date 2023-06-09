@@ -10,7 +10,7 @@ import { ENUM_SET } from "./helper.js";
 
 var loginErrorMessage = undefined;
 var state = getCookie("state")||ENUM_SET.STATES.Login;
-
+var logoutSuccess = false;
 if(getCookie(ENUM_SET.COOKIE_SET.token) !== "") state = getCookie(ENUM_SET.COOKIE_SET.state);
 
 if ("serviceWorker" in navigator) {
@@ -30,20 +30,23 @@ window.onload = () => {
 
 function initApp() {
   document.body.addEventListener("spaContentLoaded", console.log);
+  const s = getCookie(ENUM_SET.COOKIE_SET.state);
+  const h = getCookie(ENUM_SET.COOKIE_SET.hash);
   renderPage()
 }
 
-function updateApp(newState, loginerror, userhash) {
+function updateApp(newState, loginerror, userhash, successMsg) {
   setNewCookie(ENUM_SET.COOKIE_SET.state, newState, 10);
   state = newState;
   loginErrorMessage = loginerror;
+  logoutSuccess = successMsg;
   renderPage(userhash);
 }
 
 function renderPage(userhash) {
   switch (state) {
     case ENUM_SET.STATES.Login:
-      loadLoginPage(updateApp, loginErrorMessage);
+      loadLoginPage(updateApp, loginErrorMessage, logoutSuccess);
       break;
     case ENUM_SET.STATES.Register:
       loadRegisterPage(updateApp);

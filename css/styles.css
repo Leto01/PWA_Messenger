@@ -150,6 +150,14 @@ header{
     color: red;
 }
 
+.errorMsg{
+    color: red;
+}
+
+.successLogout{
+    color:green;
+}
+
 .addBaner{
     
     word-break: break-word;

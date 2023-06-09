@@ -61,11 +61,15 @@ function onLogout() {
   const token = getCookie(ENUM_SET.COOKIE_SET.token);
   logout(token)
     .then(() => {
-      deleteCookie(ENUM_SET.COOKIE_SET.hash);
-      deleteCookie(ENUM_SET.COOKIE_SET.token)
-      rerender(ENUM_SET.STATES.Login, undefined);
+      cleanCache(undefined, true);
     })
     .catch(console.error);
+}
+
+function cleanCache(errorMsg, success=false) {
+  deleteCookie(ENUM_SET.COOKIE_SET.hash);
+  deleteCookie(ENUM_SET.COOKIE_SET.token)
+  rerender(ENUM_SET.STATES.Login, errorMsg, undefined, "Logout success");
 }
 
 function getChatMessageBox() {
@@ -122,20 +126,24 @@ function getMessageView() {
   var messageViewDiv = createElement("div", "messageview");
 
   fetchmessage(getCookie(ENUM_SET.COOKIE_SET.token))
-    .then((r) =>
-      r
-        .json()
-        .then((data) => {
-          console.log(data.messages)
-          messageSet.messages = data.messages;
-          messageSet.messages.forEach((m) => {
-            appendChild(messageViewDiv, [displayMessage(m)]);
-          });
-          scrollDown();
-        })
-        .catch((err) => {
-          console.warn(err);
-        })
+    .then((r) => {
+      if (r.status == ENUM_SET.STATES.falsyToken) {
+        cleanCache("Token expired. New login requiered.");
+
+      } else {
+        r.json()
+          .then((data) => {
+            messageSet.messages = data.messages;
+            messageSet.messages.forEach((m) => {
+              appendChild(messageViewDiv, [displayMessage(m)]);
+            });
+            scrollDown();
+          })
+          .catch((err) => {
+            console.warn(err);
+          })
+      }
+    }
     )
     .catch(console.warn);
 
