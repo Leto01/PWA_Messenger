@@ -181,7 +181,7 @@ function displayMessage(oMessage) {
   }
   var messageContainer = createElement(
     "div",
-    "message" + (isMe ? " mine" : "")
+    "message" + (isMe ? " mine" : "") + " top"
   );
   messageContainer.setAttribute("id", oMessage.id);
   var userName = createElement(
