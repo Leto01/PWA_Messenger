@@ -72,7 +72,7 @@ function cleanCache(errorMsg, success = false) {
 
 function getChatMessageBox() {
   var form = createElement("form", "messageBox");
-  var messageInput = createElement("input");
+  var messageInput = createElement("input", "messageInput");
 
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "SEND");
   sendBtn.addEventListener("click", (e) => {
@@ -106,13 +106,23 @@ function getChatMessageBox() {
   return form;
 }
 
-function formatTime(time) {
-  if (time === undefined) {
-    var h = d.getHours();
-    var m = d.getMinutes();
-    return "today: " + (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
-  }
+function createCameraButton() {
+  if(!'mediaDevices' in navigator) return;
 }
+
+function switchOn() {
+  // Get camera media stream and set it to player
+  navigator.mediaDevices
+  .getUserMedia({
+  video: { width: 640, height: 480 },
+  audio: false,
+  facingMode: 'user', // or environment
+  })
+  .then(stream => {
+  console.log('Establish stream');
+  this.videoNode.srcObject = this.stream = stream;
+  });
+  }
 
 function appendNewSendMessage(msg) {
   const div = document.getElementsByClassName("messageview");
@@ -209,8 +219,9 @@ function convertTime(str){
     rawDate[1] = rawDate[1].replaceAll("-", ":");
     const isoDate = rawDate.join("T") + "Z";
      dateStamp = new Date(isoDate);
-     conf = {...conf, 
-      timeZone: 'Europe/Lisabon'}
+     conf = {...conf}
+    //  dateStamp.setMonth(dateStamp.getMonth()-1);
+     dateStamp.setHours(dateStamp.getHours()-2)
   }
   const currDateStamp = new Date();
   

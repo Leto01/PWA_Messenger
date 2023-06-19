@@ -178,7 +178,6 @@ body, p, input, select, textarea, button{
 }
 
 .messageview{
-    height: 100vh;
     width: 60%;
     max-width: 960px;
     margin-bottom: 80px;
@@ -192,18 +191,17 @@ body, p, input, select, textarea, button{
 .messageview::-webkit-scrollbar{
     width: 10px;
     height: 95%;
-    
 }
 
 .messageview::-webkit-scrollbar-track {
     border-radius: 10px;
-    border: solid lightgray 1px;
-    box-shadow: 1px 1px 5px #9991C9 inset;
+    /* border: solid lightgray 1px; */
+    /* box-shadow: 1px 1px 5px #9991C9 inset; */
 }
 
 .messageview::-webkit-scrollbar-thumb{
     border-radius: 8px;
-    box-shadow: 5px 5px 10px #fff inset, -3px -3px 5px #9991C9 inset;
+    background-color: rgb(75, 75, 255);;
     width: 1px;
 }
 
@@ -215,8 +213,43 @@ body, p, input, select, textarea, button{
     left: 50%;
     transform: translate(-50%);
     width: 60%;
+    max-width: 960px;
     box-sizing: border-box;
     min-height: calc(100vh-40px);
+}
+@media screen and (min-width: 621px) {
+    .messageBox{
+       min-width: 620px;
+    }
+    .messageview{
+        min-width: 620px;
+    }
+}
+@media screen and (max-width: 620px) {
+    .messageBox{
+        width: 100%;
+    }
+    .messageview{
+        width: 100%;
+    }
+}
+
+button, input{
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #EBECF0;
+    margin-top: 16px;}
+
+.sendMessageBtn{
+    width: auto;
+    margin-left: 4px;
+}
+
+.messageInput {
+    width: 100%;
 }
 
 .message{
@@ -227,34 +260,36 @@ body, p, input, select, textarea, button{
     /* box-shadow: -5px -5px 20px #fff, 5px 5px 20px #9991C9; */
     border-radius: 12px 12px 12px 2px;
     word-break: break-word;
-    /* width: 500px; */
+    width: fit-content;
     max-width: 600px;
+    min-width: 96px;
     margin-left: 8px;
 }
 
-.topL{
-    
+/*
+button, input{
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #EBECF0;
+    text-shadow: 1px 1px 0 #FFF;
+    margin-top: 16px;
 }
-
-.middleL{
-
+input{
+    margin-right: 8px;
+    box-shadow: inset 2px 2px 5px #9991C9, inset -5px -5px 10px #FFF;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+    appearance: none;
+    -webkit-appearance: none;
 }
-
-.bottomL{
-
+input:focus{
+    box-shadow: inset 1px 1px 2px #9991C9, inset -1px -1px 2px #FFF;
 }
-
-.topR{
-
-}
-
-.middleR{
-
-}
-
-.bottomR{
-
-}
+*/
 
 .mine{
     margin: 16px 8px 10px auto;
@@ -270,13 +305,13 @@ body, p, input, select, textarea, button{
     margin: 0 auto; /* Gives that scrolling effect as the typing happens */
     letter-spacing: .15em; /* Adjust as needed */
     animation: 
-      typing 3.5s steps(40, end),
+      typing 3.5s steps(20, end),
       blink-caret .75s step-end infinite;
 }
 
 @keyframes typing {
     from { width: 0 }
-    to { width: 488px }
+    to { width: 227px }
 }
   
   /* The typewriter cursor effect */
@@ -284,3 +319,4 @@ body, p, input, select, textarea, button{
     from, to { border-color: transparent }
     50% { border-color: #9991C9; }
 }
+

@@ -23,11 +23,11 @@ export function loadLoginPage(callback, err, successLogout) {
     c.appendChild(errorMsg);
   }
   if (successLogout){
-    var successMsg = createElement("div", "successLogout");
-    successMsg.innerHTML = successLogout;
-    c.appendChild(successMsg);
+    // var successMsg = createElement("div", "successLogout");
+    // successMsg.innerHTML = successLogout;
+    // c.appendChild(successMsg);
   }
-  appendChild(c, [LoginAdd(), feeldSet]);
+  appendChild(c, [feeldSet]);
 }
 
 function validateLoginResponse(data) {
@@ -66,9 +66,9 @@ function onRegister(e) {
 function getFeeldSet() {
   var form = createElement("form", "content login");
   var div = createElement("div", "inputfield");
-  var h2Title = createElement("h2", "title_h2");
-  h2Title.innerText = "P-WAM";
-  appendChild(form, [h2Title, div]);
+  var h1Title = createElement("h1", "title_h2");
+  h1Title.innerText = "P-WAM";
+  appendChild(form, [h1Title, LoginAdd(),div]);
 
   const inputName = makeInput("text", "userId", "User ID", 8);
   const brk = createElement("br");
@@ -109,6 +109,6 @@ function getFeeldSet() {
 
 function LoginAdd() {
   let div = createElement("h4", "addBaner");
-  div.innerText = "Use P-WAM for messaging your mates from class"
+  div.innerText = "Apps & UX Messenger"
   return div;
 }
