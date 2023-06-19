@@ -90,7 +90,7 @@ function getChatMessageBox() {
                 userhash: getCookie(ENUM_SET.COOKIE_SET.hash),
                 usernickname: myUserName,
                 text: messageInput.value,
-                time: formatTime(),
+                time: "TODAY", //ADD TO ENUM SET FOR LESS MAGIC TEXT
                 chatid: chatId,
               };
               messageInput.value = "";
@@ -199,21 +199,26 @@ function displayMessage(oMessage) {
 }
 
 function convertTime(str){
-  let rawDate=str.split("_");
-  rawDate[1] = rawDate[1].replaceAll("-", ":");
-  const isoDate = rawDate.join("T") + "Z";
-  const dateStamp = new Date(isoDate);
-  const currDateStamp = new Date();
+  let dateStamp = new Date();
   let conf = {
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }
+  if(str!=="TODAY"){
+    let rawDate=str.split("_");
+    rawDate[1] = rawDate[1].replaceAll("-", ":");
+    const isoDate = rawDate.join("T") + "Z";
+     dateStamp = new Date(isoDate);
+     conf = {...conf, 
+      timeZone: 'Europe/Lisabon'}
+  }
+  const currDateStamp = new Date();
+  
   const timeTodayInMs = currDateStamp.getHours()*60*60*1000 + currDateStamp.getMinutes()*60*1000 + currDateStamp.getSeconds()*1000+ currDateStamp.getMilliseconds();
   if(currDateStamp.getTime()-dateStamp.getTime() >= timeTodayInMs){
     conf = {...conf, weekday : 'short'}
-    console.log("old");
     return dateStamp.toLocaleDateString([], conf);
   }
-  console.log("today")
+  console.log(dateStamp.getTimezoneOffset())
   return dateStamp.toLocaleTimeString([], conf);
 }
