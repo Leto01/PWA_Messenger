@@ -34,9 +34,7 @@ export function loadChatPage(callback, uhash) {
 
 function scrollDown() {
   const element = document.getElementsByClassName("messageview")[0];
-  console.log(element.scrollTop);
   element.scrollTop = element.scrollHeight;
-  console.log(element.scrollTop);
 }
 
 function initHeader() {
@@ -85,6 +83,7 @@ function getChatMessageBox() {
           r
             .json()
             .then((data) => {
+              console.log(data)
               errorSend = data.code !== 200;
               const msgObj = {
                 id: messageSet.messages[messageSet.messages.length],
@@ -138,7 +137,6 @@ function getMessageView() {
                 fetchPhoto(m.photoid, getCookie(ENUM_SET.COOKIE_SET.token)).then(res=>{return res.text()})
                 .then( res => {
                   const url =  "https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getphoto&token=" + getCookie(ENUM_SET.COOKIE_SET.token) + "&photoid=" + m.photoid;
-                  console.log(url)
                   m.imgUrl = url;
                   addImageToMessage(m);
                 })
@@ -194,8 +192,28 @@ function displayMessage(oMessage) {
   var msg = createElement("p");
   msg.innerText = oMessage.text ? oMessage.text : "";
   var timestmp = createElement("p");
-  timestmp.innerText = oMessage.time;
+  timestmp.innerText = convertTime(oMessage.time);
   appendChild(msgContainer, [msg]);
   appendChild(messageContainer, [userName, msgContainer, timestmp]);
   return messageContainer;
+}
+
+function convertTime(str){
+  let rawDate=str.split("_");
+  rawDate[1] = rawDate[1].replaceAll("-", ":");
+  const isoDate = rawDate.join("T") + "Z";
+  const dateStamp = new Date(isoDate);
+  const currDateStamp = new Date();
+  let conf = {
+    hour: '2-digit',
+    minute: '2-digit'
+  }
+  const timeTodayInMs = currDateStamp.getHours()*60*60*1000 + currDateStamp.getMinutes()*60*1000 + currDateStamp.getSeconds()*1000+ currDateStamp.getMilliseconds();
+  if(currDateStamp.getTime()-dateStamp.getTime() >= timeTodayInMs){
+    conf = {...conf, weekday : 'short'}
+    console.log("old");
+    return dateStamp.toLocaleDateString([], conf);
+  }
+  console.log("today")
+  return dateStamp.toLocaleTimeString([], conf);
 }
