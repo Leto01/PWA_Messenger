@@ -68,29 +68,6 @@ button:active{
     box-sizing: inset 1px 1px 2px #9991C9, inset -1px -1px 2px #fff;
 }
 
-.login, .register{
-    margin-top: 64px;
-}
-
-header{
-    padding:8px;
-    background-color: #9991C9;
-    width: 100%;
-    color: #F9F9F9;
-}
-
-.chatHeaderDiv{
-    text-shadow: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.logout{
-    width:36px;
-    height:36px;
-}
-
 .messageview{
     height: 100vh;
     width: 60%;
@@ -103,40 +80,6 @@ header{
     box-shadow:  2px 0px 10px #9991C9 inset;
     border-radius: 0 0 8px 8px;
 }
-
-.messageview::-webkit-scrollbar{
-    width: 10px;
-    height: 95%;
-    
-}
-
-.messageview::-webkit-scrollbar-track {
-    border-radius: 10px;
-    border: solid lightgray 1px;
-    box-shadow: 1px 1px 5px #9991C9 inset;
-}
-
-.messageview::-webkit-scrollbar-thumb{
-    border-radius: 8px;
-    box-shadow: 5px 5px 10px #fff inset, -3px -3px 5px #9991C9 inset;
-    width: 1px;
-}
-
-.messageBox{
-    bottom: 12px;
-    display: flex;
-    position: fixed;
-    height: fit-content;
-    left: 50%;
-    transform: translate(-50%);
-    width: 60%;
-    box-sizing: border-box;
-    min-height: calc(100vh-40px);
-}
-.sendMessageBtn{
-    width: auto;
-}
-
 
 .errorSend{
     color: red;
@@ -177,6 +120,28 @@ body, p, input, select, textarea, button{
     height:36px;
 }
 
+.darkIcon{
+
+}
+
+.lightIcon{
+    filter: invert(98%) sepia(41%) saturate(409%) hue-rotate(334deg) brightness(104%) contrast(92%);
+}
+
+.errorMsg{
+    color: red;
+}
+
+.loginContainer {
+    background-color: rgba(56, 56, 56, 0.281);
+    padding: 32px;
+    border-radius: 16px;
+}
+
+.title_h2{
+    padding-bottom: 16px;
+}
+
 .messageview{
     margin-bottom: 80px;
     padding-bottom: 20px;
@@ -193,8 +158,6 @@ body, p, input, select, textarea, button{
 
 .messageview::-webkit-scrollbar-track {
     border-radius: 10px;
-    /* border: solid lightgray 1px; */
-    /* box-shadow: 1px 1px 5px #9991C9 inset; */
 }
 
 .messageview::-webkit-scrollbar-thumb{
@@ -214,6 +177,15 @@ body, p, input, select, textarea, button{
     min-height: calc(100vh-40px);
 }
 
+.chatHeaderDiv{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-top: 4px;
+    padding-right: 16px;
+
+}
+
 .messageBox, .messageview, header{
     width: 60%;
     max-width: 960px;
@@ -230,7 +202,7 @@ body, p, input, select, textarea, button{
     }
 }
 
-button, input{
+button, input, textarea{
     border: 0;
     outline: 0;
     font-size: 16px;
@@ -246,10 +218,18 @@ button, input{
     border-radius: 100%;
     width: fit-content;
     height: fit-content;
+    font-size: 8px;
+    padding: 6px;
+}
+
+.sendIco {
+    transform: rotate(-23deg);
+    margin-left: 4px;
 }
 
 .messageInput {
     width: 100%;
+    resize: none;
 }
 
 h1, h2, h3, h4, h5 {
@@ -260,7 +240,7 @@ h1, h2, h3, h4, h5 {
     color:beige;
     background-color: #141414;
     margin-top: 16px;
-    padding: 16px;
+    padding: 8px 8px 4px 8px;
     /* box-shadow: -5px -5px 20px #fff, 5px 5px 20px #9991C9; */
     border-radius: 12px 12px 12px 2px;
     word-break: break-word;
@@ -274,32 +254,12 @@ h1, h2, h3, h4, h5 {
     width: 100%;
     font-size: small;
     text-align: right;
+    color: rgb(205, 212, 221);
 }
 
-/*
-button, input{
-    border: 0;
-    outline: 0;
-    font-size: 16px;
+.messageImage {
     border-radius: 8px;
-    padding: 16px;
-    background-color: #EBECF0;
-    text-shadow: 1px 1px 0 #FFF;
-    margin-top: 16px;
 }
-input{
-    margin-right: 8px;
-    box-shadow: inset 2px 2px 5px #9991C9, inset -5px -5px 10px #FFF;
-    width: 100%;
-    box-sizing: border-box;
-    transition: all 0.2s ease-in-out;
-    appearance: none;
-    -webkit-appearance: none;
-}
-input:focus{
-    box-shadow: inset 1px 1px 2px #9991C9, inset -1px -1px 2px #FFF;
-}
-*/
 
 .mine{
     margin: 16px 8px 10px auto;
@@ -317,6 +277,7 @@ input:focus{
     animation: 
       typing 3.5s steps(20, end),
       blink-caret .75s step-end infinite;
+    margin-bottom: 32px;
 }
 
 @keyframes typing {

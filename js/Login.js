@@ -64,12 +64,13 @@ function onRegister(e) {
 }
 
 function getFeeldSet() {
+  var container = createElement("div", "loginContainer")
   var form = createElement("form", "content login");
   var div = createElement("div", "inputfield");
   var h1Title = createElement("h1", "title_h2");
   h1Title.innerText = "P-WAM";
-  appendChild(form, [h1Title, LoginAdd(),div]);
-
+  appendChild(form, [div]);
+  appendChild(container, [h1Title, LoginAdd(), form])
   const inputName = makeInput("text", "userId", "User ID", 8);
   const brk = createElement("br");
   const inputPassword = makeInput(
@@ -104,7 +105,7 @@ function getFeeldSet() {
   appendChild(divButton, [btn, regBtn]);
   appendChild(form, [divButton]);
 
-  return form;
+  return container;
 }
 
 function LoginAdd() {

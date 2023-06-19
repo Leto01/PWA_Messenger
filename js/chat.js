@@ -43,7 +43,7 @@ function initHeader() {
   var title = createElement("h1");
   title.innerText = "P-WAM";
   var clickLogout = createElement("div", "logoutButton");
-  var logoutIco = createElement("img", "logout");
+  var logoutIco = createElement("img", "logout lightIcon");
 
   logoutIco.setAttribute("src", "../assets/logout.svg");
   logoutIco.setAttribute("alt", "Logout button");
@@ -73,7 +73,7 @@ function cleanCache(errorMsg, success = false) {
 
 function getChatMessageBox() {
   var form = createElement("form", "messageBox");
-  var messageInput = createElement("input", "messageInput");
+  var messageInput = createElement("textarea", "messageInput"); //Input
 
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
   const sendIcon = createElement("img", "sendIco");

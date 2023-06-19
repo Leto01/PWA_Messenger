@@ -31,7 +31,7 @@ export function makeInput(t, n, ph, minLen) {
   n ? (input.name = n) : undefined;
   //input.minlength = minLen;
   // input.required;
-  minLen ? input.setAttribute("minlength", minLen) : undefined;
+  // minLen ? input.setAttribute("minlength", minLen) : undefined;
   input.setAttribute("required", "");
   return input;
 }
