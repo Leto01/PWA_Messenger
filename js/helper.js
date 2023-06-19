@@ -78,6 +78,7 @@ export const colorMap = {
   11:"#fe8bb6"
 }
 
+const MAX_COLOR_ID = 11;
 let mapedHash = [];
 
 export const getColorOfUserhash = (hash) =>{
@@ -87,7 +88,7 @@ export const getColorOfUserhash = (hash) =>{
     if(h.hash === hash) return res + colorMap[h.id] + ";";
     lastMap = h.id;
   }
-  if (lastMap >= 11) lastMap = 0;
+  if (lastMap >= MAX_COLOR_ID) lastMap = 0;
   const newEntry = {hash:hash, id: (lastMap+1)};
   mapedHash.push(newEntry);
   return res + colorMap[newEntry.id] + ";";
