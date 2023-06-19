@@ -30,6 +30,8 @@ let globalContentcontainer;
 let camStream;
 let imgCanvas;
 let imgUrl;
+let msgInputForm;
+
 export function loadChatPage(callback, uhash) {
   testMyHash = uhash;
   rerender = callback;
@@ -84,15 +86,15 @@ function cleanCache(errorMsg, success = false) {
 function getChatMessageBox() {
 
   var form = createElement("form", "messageBox");
+  msgInputForm = form;
   var messageInput = createElement("textarea", "messageInput"); //Input
   var CameraBtn = createButton("btn cameraBtn", "sendbutton", "");
   const cameraIcon = createElement("img", "cameraIco darkIcon");
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
   const sendIcon = createElement("img", "sendIco darkIcon");
-
   const sendMsg = (e) => {
     e.preventDefault();
-    if (messageInput.value.trim() !== "") {
+    if (messageInput.value.trim() !== "" && imgUrl ==="") {
       sendmessage(messageInput.value, getCookie(ENUM_SET.COOKIE_SET.token))
         .then((r) =>
           r
@@ -115,6 +117,11 @@ function getChatMessageBox() {
             .catch(console.error)
         )
         .catch(console.error); // save request and resend later
+    } else if(imgUrl!==""){
+      sendPicture(messageInput.value, imgUrl.slice(22), getCookie(ENUM_SET.COOKIE_SET.token)).then(res=>{
+        imgUrl="";
+        rerender(ENUM_SET.STATES.Chat, undefined, getCookie(ENUM_SET.COOKIE_SET.hash));
+    })
     }
   };
 
@@ -139,8 +146,9 @@ function getChatMessageBox() {
   sendIcon.setAttribute("alt", "Send Message Button");
   appendChild(sendBtn, [sendIcon]);
   sendBtn.addEventListener("click", sendMsg);
+  let appendex = [CameraBtn, messageInput, sendBtn]
 
-  appendChild(form, [CameraBtn, messageInput, sendBtn]);
+  appendChild(form, appendex);
   return form;
 }
 
@@ -177,10 +185,15 @@ function openCamDialog(e) {
     imgUrl.slice(22);
     ctx = null;
     imgCanvas = null;
+    camStream = null;
     const t = getCookie(ENUM_SET.COOKIE_SET.token);
-    sendPicture("Test pic 3", imgUrl.slice(22), t).then(res=>{
-      rerender(ENUM_SET.STATES.Chat, undefined, getCookie(ENUM_SET.COOKIE_SET.hash));
-    })
+    camPopup.remove();
+    addImagePreviewToMsgForm();
+
+    // sendPicture("Test pic 3", imgUrl.slice(22), t).then(res=>{
+    //   camPopup = '';
+    //   rerender(ENUM_SET.STATES.Chat, undefined, getCookie(ENUM_SET.COOKIE_SET.hash));
+    // })
 
   })
 
@@ -189,20 +202,11 @@ function openCamDialog(e) {
   appendChild(globalContentcontainer, [camPopup]);
 }
 
-
-
-function switchOn() {
-  // Get camera media stream and set it to player
-  navigator.mediaDevices
-    .getUserMedia({
-      video: { width: 640, height: 480 },
-      audio: false,
-      facingMode: "user", // or environment
-    })
-    .then((stream) => {
-      console.log("Establish stream");
-      this.videoNode.srcObject = this.stream = stream;
-    });
+function addImagePreviewToMsgForm(){
+  let img = createElement("img", "sendImgPreview");
+  img.setAttribute("id", "previewImage");
+  img.setAttribute("src", imgUrl);
+  appendChild(msgInputForm, [img])
 }
 
 function appendNewSendMessage(msg) {

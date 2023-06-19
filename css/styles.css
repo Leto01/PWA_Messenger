@@ -180,6 +180,7 @@ input{
 }
 
 .messageBox{
+    position: absolute;
     bottom: 12px;
     display: flex;
     position: fixed;
@@ -188,6 +189,12 @@ input{
     transform: translate(-50%);
     box-sizing: border-box;
     min-height: calc(100vh-40px);
+}
+
+.sendImgPreview{
+    position: relative;
+    width:64px;
+    height:48px;
 }
 
 .chatHeaderDiv{
