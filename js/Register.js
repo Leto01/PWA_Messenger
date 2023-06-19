@@ -55,7 +55,7 @@ function getFeeldSet() {
 
   var divButton = createElement("div", "submitbutton");
   var btn = createButton("btn", "register", "REGISTER");
-  var returnToLogin = createButton("btn", "return", "RETURN TO LOGIN");
+  var returnToLogin = createButton("btn", "return", "LOGIN");
   returnToLogin.addEventListener(
     "click",
     () => {
@@ -75,7 +75,8 @@ function getFeeldSet() {
 
   form.addEventListener("input", btnEnabler);
 
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
     pageRegisterSent(
       inputName.value,
       inputFullName.value,
@@ -90,7 +91,7 @@ function getFeeldSet() {
 }
 
 function pageRegisterSent(id, fullName, nickname, pw) {
-  register(id, pw, nickname, fullName).then((res) =>
+  register(id, pw, nickname, fullName).then((res) =>{
     res.json().then((data) => {
       if (data.code === 200) {
         setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
@@ -100,6 +101,6 @@ function pageRegisterSent(id, fullName, nickname, pw) {
       } else {
 
       }
-    })
-  );
+    })}
+  ).catch(err => { console.log(err)});
 }
