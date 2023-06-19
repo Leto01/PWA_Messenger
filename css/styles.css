@@ -178,8 +178,6 @@ body, p, input, select, textarea, button{
 }
 
 .messageview{
-    width: 60%;
-    max-width: 960px;
     margin-bottom: 80px;
     padding-bottom: 20px;
     box-sizing: border-box;
@@ -212,24 +210,22 @@ body, p, input, select, textarea, button{
     height: fit-content;
     left: 50%;
     transform: translate(-50%);
-    width: 60%;
-    max-width: 960px;
     box-sizing: border-box;
     min-height: calc(100vh-40px);
 }
+
+.messageBox, .messageview, header{
+    width: 60%;
+    max-width: 960px;
+}
+
 @media screen and (min-width: 621px) {
-    .messageBox{
+    .messageBox, .messageview, header{
        min-width: 620px;
-    }
-    .messageview{
-        min-width: 620px;
     }
 }
 @media screen and (max-width: 620px) {
-    .messageBox{
-        width: 100%;
-    }
-    .messageview{
+    .messageBox, .messageview, header{
         width: 100%;
     }
 }
@@ -240,16 +236,24 @@ button, input{
     font-size: 16px;
     border-radius: 8px;
     padding: 16px;
-    background-color: #EBECF0;
-    margin-top: 16px;}
+    background-color: beige;
+    margin-top: 16px;
+}
 
 .sendMessageBtn{
     width: auto;
-    margin-left: 4px;
+    margin-left: 6px;
+    border-radius: 100%;
+    width: fit-content;
+    height: fit-content;
 }
 
 .messageInput {
     width: 100%;
+}
+
+h1, h2, h3, h4, h5 {
+    color:beige;
 }
 
 .message{
@@ -264,6 +268,12 @@ button, input{
     max-width: 600px;
     min-width: 96px;
     margin-left: 8px;
+}
+
+.messageTimeStamp{
+    width: 100%;
+    font-size: small;
+    text-align: right;
 }
 
 /*

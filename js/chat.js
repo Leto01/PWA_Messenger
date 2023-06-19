@@ -7,6 +7,7 @@ import {
   createElement,
   createHeadder,
   getEmptyContent,
+  getColorOfUserhash
 } from "./helper.js";
 
 var rerender = () => {
@@ -74,7 +75,11 @@ function getChatMessageBox() {
   var form = createElement("form", "messageBox");
   var messageInput = createElement("input", "messageInput");
 
-  var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "SEND");
+  var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
+  const sendIcon = createElement("img", "sendIco");
+  sendIcon.setAttribute("src", "../assets/send_icon.svg");
+  sendIcon.setAttribute("alt", "Send Message Button");
+  appendChild(sendBtn, [sendIcon])
   sendBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (messageInput.value.trim() !== "") {
@@ -184,6 +189,7 @@ function addImageToMessage (mObj) {
 function displayMessage(oMessage) {
   var isMe = oMessage.userhash === testMyHash;
   chatId = oMessage.chatId;
+
   if (isMe) {
     myUserName = oMessage.usernickname;
   }
@@ -197,14 +203,18 @@ function displayMessage(oMessage) {
     "username" + (errorSend ? " errorSend" : "")
   );
   userName.innerText = oMessage.usernickname;
+  if(!isMe){
+    userName.setAttribute("style", getColorOfUserhash(oMessage.userhash))
+  }
   var msgContainer = createElement("div");
   msgContainer.setAttribute("id", "c"+oMessage.id)
   var msg = createElement("p");
   msg.innerText = oMessage.text ? oMessage.text : "";
-  var timestmp = createElement("p");
+  var timestmp = createElement("p", "messageTimeStamp");
   timestmp.innerText = convertTime(oMessage.time);
   appendChild(msgContainer, [msg]);
-  appendChild(messageContainer, [userName, msgContainer, timestmp]);
+  const itemList = isMe?[msgContainer, timestmp]:[userName, msgContainer, timestmp];
+  appendChild(messageContainer, itemList);
   return messageContainer;
 }
 
