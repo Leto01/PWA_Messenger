@@ -1,4 +1,9 @@
-import { fetchPhoto, fetchmessage, logout, sendmessage } from "./chat.service.js";
+import {
+  fetchPhoto,
+  fetchmessage,
+  logout,
+  sendmessage,
+} from "./chat.service.js";
 import { deleteCookie, getCookie } from "./cookie.service.js";
 import {
   ENUM_SET,
@@ -7,7 +12,7 @@ import {
   createElement,
   createHeadder,
   getEmptyContent,
-  getColorOfUserhash
+  getColorOfUserhash,
 } from "./helper.js";
 
 var rerender = () => {
@@ -72,15 +77,14 @@ function cleanCache(errorMsg, success = false) {
 }
 
 function getChatMessageBox() {
+
   var form = createElement("form", "messageBox");
   var messageInput = createElement("textarea", "messageInput"); //Input
-
+  
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
   const sendIcon = createElement("img", "sendIco");
-  sendIcon.setAttribute("src", "../assets/send_icon.svg");
-  sendIcon.setAttribute("alt", "Send Message Button");
-  appendChild(sendBtn, [sendIcon])
-  sendBtn.addEventListener("click", (e) => {
+
+  const sendMsg = (e) => {
     e.preventDefault();
     if (messageInput.value.trim() !== "") {
       sendmessage(messageInput.value, getCookie(ENUM_SET.COOKIE_SET.token))
@@ -88,7 +92,6 @@ function getChatMessageBox() {
           r
             .json()
             .then((data) => {
-              console.log(data)
               errorSend = data.code !== 200;
               const msgObj = {
                 id: messageSet.messages[messageSet.messages.length],
@@ -101,33 +104,53 @@ function getChatMessageBox() {
               messageInput.value = "";
               messageSet.messages.push(msgObj);
               appendNewSendMessage(msgObj);
+              messageInput.style.height = "54px";
             })
             .catch(console.error)
         )
         .catch(console.error); // save request and resend later
     }
-  });
+  };
+  messageInput.setAttribute("placeholder","Message")
+  messageInput.setAttribute("style", "height:54px; overflow-y:hidden;");
+  messageInput.addEventListener(
+    "keydown",
+    (e) => {
+      if(e.key==="Enter" && !e.ctrlKey){
+        sendMsg(e);
+      }
+      messageInput.style.height = "54px";
+      messageInput.style.height = messageInput.scrollHeight + "px";
+    },
+    false
+  );
+
+  sendIcon.setAttribute("src", "../assets/send_icon.svg");
+  sendIcon.setAttribute("alt", "Send Message Button");
+  appendChild(sendBtn, [sendIcon]);
+  sendBtn.addEventListener("click", sendMsg);
+
   appendChild(form, [messageInput, sendBtn]);
   return form;
 }
 
 function createCameraButton() {
-  if(!'mediaDevices' in navigator) return;
+  if (!"mediaDevices" in navigator) return;
 }
 
 function switchOn() {
   // Get camera media stream and set it to player
   navigator.mediaDevices
-  .getUserMedia({
-  video: { width: 640, height: 480 },
-  audio: false,
-  facingMode: 'user', // or environment
-  })
-  .then(stream => {
-  console.log('Establish stream');
-  this.videoNode.srcObject = this.stream = stream;
-  });
-  }
+    .getUserMedia({
+      video: { width: 640, height: 480 },
+      audio: false,
+      facingMode: "user", // or environment
+    })
+    .then((stream) => {
+      console.log("Establish stream");
+      this.videoNode.srcObject = this.stream = stream;
+    });
+}
 
 function appendNewSendMessage(msg) {
   const div = document.getElementsByClassName("messageview");
@@ -137,24 +160,30 @@ function appendNewSendMessage(msg) {
 
 function getMessageView() {
   var messageViewDiv = createElement("div", "messageview");
-  
+
   fetchmessage(getCookie(ENUM_SET.COOKIE_SET.token))
     .then((r) => {
       if (r.status == ENUM_SET.STATES.falsyToken) {
         cleanCache("Token expired. New login requiered.");
-
       } else {
         r.json()
           .then((data) => {
             messageSet.messages = data.messages;
             messageSet.messages.forEach((m) => {
               if (m.photoid) {
-                fetchPhoto(m.photoid, getCookie(ENUM_SET.COOKIE_SET.token)).then(res=>{return res.text()})
-                .then( res => {
-                  const url =  "https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getphoto&token=" + getCookie(ENUM_SET.COOKIE_SET.token) + "&photoid=" + m.photoid;
-                  m.imgUrl = url;
-                  addImageToMessage(m);
-                })
+                fetchPhoto(m.photoid, getCookie(ENUM_SET.COOKIE_SET.token))
+                  .then((res) => {
+                    return res.text();
+                  })
+                  .then((res) => {
+                    const url =
+                      "https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getphoto&token=" +
+                      getCookie(ENUM_SET.COOKIE_SET.token) +
+                      "&photoid=" +
+                      m.photoid;
+                    m.imgUrl = url;
+                    addImageToMessage(m);
+                  });
               }
             });
             messageSet.messages.forEach((m) => {
@@ -164,25 +193,24 @@ function getMessageView() {
           })
           .catch((err) => {
             console.warn(err);
-    })
+          });
       }
-    }
-    )
+    })
     .catch(console.warn);
 
   return messageViewDiv;
 }
 
-function addImageToMessage (mObj) {
+function addImageToMessage(mObj) {
   const id = mObj.id;
-  let e = document.getElementById("c"+id);
-  e.innerHTML = '';
+  let e = document.getElementById("c" + id);
+  e.innerHTML = "";
   let img = createElement("img", "messageImage");
   var msg = createElement("p");
   msg.innerText = mObj.text ? mObj.text : "";
   img.setAttribute("src", mObj.imgUrl);
   img.setAttribute("alt", "photo");
-  img.setAttribute("width", "100%")
+  img.setAttribute("width", "100%");
   appendChild(e, [img, msg]);
 }
 
@@ -203,43 +231,48 @@ function displayMessage(oMessage) {
     "username" + (errorSend ? " errorSend" : "")
   );
   userName.innerText = oMessage.usernickname;
-  if(!isMe){
-    userName.setAttribute("style", getColorOfUserhash(oMessage.userhash))
+  if (!isMe) {
+    userName.setAttribute("style", getColorOfUserhash(oMessage.userhash));
   }
   var msgContainer = createElement("div");
-  msgContainer.setAttribute("id", "c"+oMessage.id)
+  msgContainer.setAttribute("id", "c" + oMessage.id);
   var msg = createElement("p");
   msg.innerText = oMessage.text ? oMessage.text : "";
   var timestmp = createElement("p", "messageTimeStamp");
   timestmp.innerText = convertTime(oMessage.time);
   appendChild(msgContainer, [msg]);
-  const itemList = isMe?[msgContainer, timestmp]:[userName, msgContainer, timestmp];
+  const itemList = isMe
+    ? [msgContainer, timestmp]
+    : [userName, msgContainer, timestmp];
   appendChild(messageContainer, itemList);
   return messageContainer;
 }
 
-function convertTime(str){
+function convertTime(str) {
   let dateStamp = new Date();
   let conf = {
-    hour: '2-digit',
-    minute: '2-digit',
-  }
-  if(str!=="TODAY"){
-    let rawDate=str.split("_");
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  if (str !== "TODAY") {
+    let rawDate = str.split("_");
     rawDate[1] = rawDate[1].replaceAll("-", ":");
     const isoDate = rawDate.join("T") + "Z";
-     dateStamp = new Date(isoDate);
-     conf = {...conf}
+    dateStamp = new Date(isoDate);
+    conf = { ...conf };
     //  dateStamp.setMonth(dateStamp.getMonth()-1);
-     dateStamp.setHours(dateStamp.getHours()-2)
+    dateStamp.setHours(dateStamp.getHours() - 2);
   }
   const currDateStamp = new Date();
-  
-  const timeTodayInMs = currDateStamp.getHours()*60*60*1000 + currDateStamp.getMinutes()*60*1000 + currDateStamp.getSeconds()*1000+ currDateStamp.getMilliseconds();
-  if(currDateStamp.getTime()-dateStamp.getTime() >= timeTodayInMs){
-    conf = {...conf, weekday : 'short'}
+
+  const timeTodayInMs =
+    currDateStamp.getHours() * 60 * 60 * 1000 +
+    currDateStamp.getMinutes() * 60 * 1000 +
+    currDateStamp.getSeconds() * 1000 +
+    currDateStamp.getMilliseconds();
+  if (currDateStamp.getTime() - dateStamp.getTime() >= timeTodayInMs) {
+    conf = { ...conf, weekday: "short" };
     return dateStamp.toLocaleDateString([], conf);
   }
-  console.log(dateStamp.getTimezoneOffset())
   return dateStamp.toLocaleTimeString([], conf);
 }
