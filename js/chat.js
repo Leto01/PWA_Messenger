@@ -3,6 +3,7 @@ import {
   fetchmessage,
   logout,
   sendmessage,
+  sendPicture
 } from "./chat.service.js";
 import { deleteCookie, getCookie } from "./cookie.service.js";
 import {
@@ -25,11 +26,15 @@ var myUserName = "";
 var chatId = 0;
 var errorSend = false;
 const d = new Date();
-
+let globalContentcontainer;
+let camStream;
+let imgCanvas;
+let imgUrl;
 export function loadChatPage(callback, uhash) {
   testMyHash = uhash;
   rerender = callback;
   var c = getEmptyContent(".contentContainer");
+  globalContentcontainer = c;
   var messageBox = getChatMessageBox();
   var messageView = getMessageView();
 
@@ -80,9 +85,10 @@ function getChatMessageBox() {
 
   var form = createElement("form", "messageBox");
   var messageInput = createElement("textarea", "messageInput"); //Input
-  
+  var CameraBtn = createButton("btn cameraBtn", "sendbutton", "");
+  const cameraIcon = createElement("img", "cameraIco darkIcon");
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
-  const sendIcon = createElement("img", "sendIco");
+  const sendIcon = createElement("img", "sendIco darkIcon");
 
   const sendMsg = (e) => {
     e.preventDefault();
@@ -111,6 +117,7 @@ function getChatMessageBox() {
         .catch(console.error); // save request and resend later
     }
   };
+
   messageInput.setAttribute("placeholder","Message")
   messageInput.setAttribute("style", "height:54px; overflow-y:hidden;");
   messageInput.addEventListener(
@@ -124,19 +131,65 @@ function getChatMessageBox() {
     },
     false
   );
-
+  cameraIcon.setAttribute("src", "../assets/camera_icon.svg");
+  cameraIcon.setAttribute("alt", "Open Camera Button");
+  appendChild(CameraBtn, [cameraIcon]);
+  CameraBtn.addEventListener("click", openCamDialog);
   sendIcon.setAttribute("src", "../assets/send_icon.svg");
   sendIcon.setAttribute("alt", "Send Message Button");
   appendChild(sendBtn, [sendIcon]);
   sendBtn.addEventListener("click", sendMsg);
 
-  appendChild(form, [messageInput, sendBtn]);
+  appendChild(form, [CameraBtn, messageInput, sendBtn]);
   return form;
 }
 
-function createCameraButton() {
+function openCamDialog(e) {
+  e.preventDefault();
   if (!"mediaDevices" in navigator) return;
+  let camPopup = createElement("div", "camPopup");
+  camPopup.setAttribute("id", "cameraPopup");
+  let camWraper = createElement("div", "camWrapper")
+  let camView = createElement("video", "cameraView");
+
+  camView.setAttribute("autoplay", "");
+  navigator.mediaDevices.getUserMedia({video:{
+    width:640,
+    height:480,
+    facingMode:"user"
+  }, audio:false}).then( stream => {
+    camStream = camView;
+    camView.srcObject = stream;
+  }).catch(console.warn);
+
+  let takeImgBtn = createButton("btn takeImgBtn", "Photobutton", "");
+
+  takeImgBtn.addEventListener('click', e=>{
+    e.preventDefault();
+    imgCanvas = createElement("canvas", "imgCanvas");
+    imgCanvas.width = 640;//camStream.videoWidth;
+    imgCanvas.height = 480;//camStream.videoHeight;
+    
+    let ctx = imgCanvas.getContext("2d");
+    console.log(ctx)
+    ctx.drawImage(camStream, 0, 0, imgCanvas.width, imgCanvas.height);
+    imgUrl = ctx.canvas.toDataURL();
+    imgUrl.slice(22);
+    ctx = null;
+    imgCanvas = null;
+    const t = getCookie(ENUM_SET.COOKIE_SET.token);
+    sendPicture("Test pic 3", imgUrl.slice(22), t).then(res=>{
+      rerender(ENUM_SET.STATES.Chat, undefined, getCookie(ENUM_SET.COOKIE_SET.hash));
+    })
+
+  })
+
+  appendChild(camWraper, [camView, takeImgBtn]);
+  appendChild(camPopup, [camWraper]);
+  appendChild(globalContentcontainer, [camPopup]);
 }
+
+
 
 function switchOn() {
   // Get camera media stream and set it to player

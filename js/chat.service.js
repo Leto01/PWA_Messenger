@@ -56,6 +56,16 @@ export async function sendmessage(msg, token) {
   return await makeFetch(body);
 }
 
+export async function sendPicture(msg, img, token){
+  const body = {
+    request: "sendmessage",
+    token: token,
+    text: msg,
+    photo: img
+  }
+  return await makeFetch(body);
+}
+
 export async function fetchmessage(token) {
   const body = {
     request: "fetchmessages",

@@ -133,6 +133,10 @@ input{
     justify-content: space-between;
 }
 
+.darkIcon{
+    filter: invert(13%) sepia(0%) saturate(754%) hue-rotate(197deg) brightness(90%) contrast(92%);
+}
+
 .lightIcon{
     filter: invert(98%) sepia(41%) saturate(409%) hue-rotate(334deg) brightness(104%) contrast(92%);
 }
@@ -231,6 +235,16 @@ button, input, textarea{
     padding: 6px;
 }
 
+.cameraBtn{
+    width: auto;
+    margin-right: 6px;
+    border-radius: 100%;
+    width: fit-content;
+    height: fit-content;
+    font-size: 8px;
+    padding: 6px;
+}
+
 .sendIco {
     transform: rotate(-23deg);
     margin-left: 4px;
@@ -298,5 +312,40 @@ h1, h2, h3, h4, h5 {
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: #9991C9; }
+}
+
+.camPopup{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 640px;
+    width: 100%;
+    height: 480px;
+    border-color: #333;
+    z-index: 11;
+}
+
+.camWrapper{
+    position: relative;
+    width:100%;
+    height:100%;
+    display: flex;
+    background-color: rgba(56, 56, 56, 0.281);
+}
+
+.cameraView{
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+.takeImgBtn{
+    position: absolute;
+    height: 32px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
