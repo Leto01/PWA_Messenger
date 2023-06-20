@@ -67,21 +67,18 @@ function initHeader() {
   clickSettings.addEventListener("click", toggleDropdownVisability);
   var clickLogout = createElement("div", "logoutButton");
   clickLogout.addEventListener("click", onLogout);
-
   appendChild(dropdown, [clickSettings, createDropdownContent()]);
   // appendChild(clickLogout, [settingsIco]);
   appendChild(div, [title, dropdown]);
-
   return div;
 }
 
 function toggleDropdownVisability() {
-  console.log(document.getElementById("DropdownMenu").classList.toggle("show"));
+  document.getElementById("DropdownMenu").classList.toggle("show");
 }
 
 window.onclick = function (event) {
   if (!event.target.matches(".dropdownContext")) {
-    console.log("no button");
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
@@ -170,7 +167,7 @@ function cleanCache(errorMsg, success = false) {
 function getChatMessageBox() {
   var form = createElement("form", "messageBox");
   msgInputForm = form;
-  var messageInput = createElement("textarea", "messageInput"); //Input
+  var messageInput = createElement("textarea", "messageInput");
   var CameraBtn = createButton("btn cameraBtn", "sendbutton", "");
   const cameraIcon = createElement("img", "cameraIco darkIcon");
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
@@ -250,7 +247,9 @@ function openCamDialog(e) {
   camPopup.setAttribute("id", "cameraPopup");
   let camWraper = createElement("div", "camWrapper");
   let camView = createElement("video", "cameraView");
-
+  let closeIcon = createElement("img", "closeCameraView");
+  closeIcon.setAttribute("src", "../assets/close.svg");
+  closeIcon.addEventListener("click", closeCameraView);
   camView.setAttribute("autoplay", "");
   navigator.mediaDevices
     .getUserMedia({
@@ -276,28 +275,42 @@ function openCamDialog(e) {
     imgCanvas.height = 480; //camStream.videoHeight;
 
     let ctx = imgCanvas.getContext("2d");
-    console.log(ctx);
     ctx.drawImage(camStream, 0, 0, imgCanvas.width, imgCanvas.height);
     imgUrl = ctx.canvas.toDataURL();
     imgUrl.slice(22);
     ctx = null;
-    imgCanvas = null;
-    camStream = null;
-    const t = getCookie(ENUM_SET.COOKIE_SET.token);
-    camPopup.remove();
+    closeCameraView();
     addImagePreviewToMsgForm();
   });
 
-  appendChild(camWraper, [camView, takeImgBtn]);
+  appendChild(camWraper, [closeIcon, camView, takeImgBtn]);
   appendChild(camPopup, [camWraper]);
   appendChild(globalContentcontainer, [camPopup]);
 }
 
 function addImagePreviewToMsgForm() {
-  let img = createElement("img", "sendImgPreview");
+  let prevDiv = createElement("div", "sendImgPreview");
+  let closeIco = createElement("img", "closePreview");
+  closeIco.addEventListener("click", onCloseImgPreview)
+  closeIco.setAttribute("src", "../assets/close.svg");
+  let img = createElement("img", "prevImg");
   img.setAttribute("id", "previewImage");
   img.setAttribute("src", imgUrl);
-  appendChild(msgInputForm, [img]);
+  appendChild(prevDiv, [closeIco, img])
+  appendChild(msgInputForm, [prevDiv]);
+}
+
+function onCloseImgPreview(){
+  imgUrl = "";
+  let div = msgInputForm.getElementsByClassName("sendImgPreview")[0];
+  div.remove();
+}
+
+function closeCameraView(){
+  imgCanvas = "";
+  camStream = null;
+  let div = document.getElementsByClassName("camPopup")[0];
+  div.remove();
 }
 
 function appendNewSendMessage(msg) {
