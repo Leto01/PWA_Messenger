@@ -3,7 +3,7 @@ import {
   fetchmessage,
   logout,
   sendmessage,
-  sendPicture
+  sendPicture,
 } from "./chat.service.js";
 import { deleteCookie, getCookie } from "./cookie.service.js";
 import {
@@ -29,7 +29,7 @@ const d = new Date();
 let globalContentcontainer;
 let camStream;
 let imgCanvas;
-let imgUrl="";
+let imgUrl = "";
 let msgInputForm;
 
 export function loadChatPage(callback, uhash) {
@@ -53,10 +53,10 @@ function scrollDown() {
 function initHeader() {
   var div = createElement("div", "chatHeaderDiv");
   var title = createElement("h1");
-  title.innerText = "P-WAM";  
-  
+  title.innerText = "P-WAM";
+
   //Dropdown Menu on Settings
-  const dropdown = createElement("div", "dropdown")
+  const dropdown = createElement("div", "dropdown");
 
   //Settingsbutton with icon
   var settingsIco = createElement("img", "settings dropdownContext lightIcon");
@@ -75,44 +75,81 @@ function initHeader() {
   return div;
 }
 
-function toggleDropdownVisability(){
+function toggleDropdownVisability() {
   console.log(document.getElementById("DropdownMenu").classList.toggle("show"));
 }
 
-window.addEventListener("click", (e)=>{console.log(e.target)})
-
-window.onclick = function(event) {
-  if (!event.target.matches('.dropdownContext') ) {
-    console.log("no button")
+window.onclick = function (event) {
+  if (!event.target.matches(".dropdownContext")) {
+    console.log("no button");
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
       var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
+      if (openDropdown.classList.contains("show")) {
+        openDropdown.classList.remove("show");
       }
     }
   }
-}
+};
 
-function createDropdownContent(){
+function createDropdownContent() {
   var container = createElement("div", "dropdown-content dropdownContext");
   container.setAttribute("id", "DropdownMenu");
 
-  let toggleContainer = createElement("div", "toggleSwitchContainer dropdownContext")
-  let toggleLabel = createElement("h4", "toggleLabel dropdownContext");
+  let toggleContainer = createElement(
+    "div",
+    "toggleSwitchContainer dropdownContext"
+  );
+  let toggleLabel = createElement("h3", "toggleLabel dropdownContext");
   toggleLabel.innerText = "Toggle Theme";
   let toggleTheme = createElement("label", "themetoggle dropdownContext");
-  appendChild(toggleContainer, [toggleLabel, toggleTheme])
-  let checkBox = createElement("input","dropdownContext");
-  checkBox.setAttribute("type", "checkbox")
-  let slider = createElement("span", "slider dropdownContext");
-  appendChild(toggleTheme, [checkBox, slider])
+  appendChild(toggleContainer, [toggleLabel, toggleTheme]);
 
-  let logout = createElement("div", "logoutBtn");
-  let deregister = createElement("div", "deregisterBtn");
-  appendChild(container, [toggleContainer]);
+  let checkBox = createElement("input", "dropdownContext");
+  checkBox.setAttribute("type", "checkbox");
+
+  checkBox.addEventListener("click", switchTheme);
+
+  let slider = createElement("span", "slider dropdownContext");
+  appendChild(toggleTheme, [checkBox, slider]);
+
+  let logout = createElement("div", "logoutBtn dropdownContext");
+  let logoutIco = createElement("img", "logoutIco lightIcon");
+  logoutIco.setAttribute("src", "../assets/logout.svg");
+  logoutIco.addEventListener("click", onLogout);
+  let logoutTxt = createElement("h3", "logoutTitle dropdownContext");
+  logoutTxt.innerText = "Logout";
+  appendChild(logout, [logoutTxt, logoutIco]);
+
+  let deregister = createElement("div", "deregisterBtn dropdownContext");
+  let deregIco = createElement("img", "deregIcon");
+  deregIco.setAttribute("src", "../assets/delete_forever.svg");
+  let deregisterTitle = createElement("h3", "deregisterTitle dropdownContext");
+  deregisterTitle.innerText = "Delete Account";
+  appendChild(deregister, [deregisterTitle, deregIco]);
+
+  appendChild(container, [toggleContainer, logout, deregister]);
   return container;
+}
+
+function switchTheme(e) {
+    var lightIco = document.getElementsByClassName("lightIcon");
+    var i;
+    for (i = 0; i < lightIco.length; i++) {
+      lightIco[i].classList.toggle("turnDarkIcon");
+    }
+    var darkIco = document.getElementsByClassName("darkIcon")
+    for (i = 0; i < darkIco.length; i++) {
+      darkIco[i].classList.toggle("turnLightIcon");
+    }
+    let view = document.getElementsByClassName("messageview");
+    let box = document.getElementsByClassName("messageBox")
+    let viewAndInput = [...view, ...box]
+    for (i = 0; i < viewAndInput.length; i++) {
+      viewAndInput[i].classList.toggle("messageViewLight");
+    }
+    document.getElementsByClassName("contentContainer")[0].classList.toggle("lightBackground")
 }
 
 function onLogout() {
@@ -131,7 +168,6 @@ function cleanCache(errorMsg, success = false) {
 }
 
 function getChatMessageBox() {
-
   var form = createElement("form", "messageBox");
   msgInputForm = form;
   var messageInput = createElement("textarea", "messageInput"); //Input
@@ -141,7 +177,7 @@ function getChatMessageBox() {
   const sendIcon = createElement("img", "sendIco darkIcon");
   const sendMsg = (e) => {
     e.preventDefault();
-    if (messageInput.value.trim() !== "" && imgUrl ==="") {
+    if (messageInput.value.trim() !== "" && imgUrl === "") {
       sendmessage(messageInput.value, getCookie(ENUM_SET.COOKIE_SET.token))
         .then((r) =>
           r
@@ -164,20 +200,28 @@ function getChatMessageBox() {
             .catch(console.error)
         )
         .catch(console.error); // save request and resend later
-    } else if(imgUrl!==""){
-      sendPicture(messageInput.value, imgUrl.slice(22), getCookie(ENUM_SET.COOKIE_SET.token)).then(res=>{
-        imgUrl="";
-        rerender(ENUM_SET.STATES.Chat, undefined, getCookie(ENUM_SET.COOKIE_SET.hash));
-    })
+    } else if (imgUrl !== "") {
+      sendPicture(
+        messageInput.value,
+        imgUrl.slice(22),
+        getCookie(ENUM_SET.COOKIE_SET.token)
+      ).then((res) => {
+        imgUrl = "";
+        rerender(
+          ENUM_SET.STATES.Chat,
+          undefined,
+          getCookie(ENUM_SET.COOKIE_SET.hash)
+        );
+      });
     }
   };
 
-  messageInput.setAttribute("placeholder","Message")
+  messageInput.setAttribute("placeholder", "Message");
   messageInput.setAttribute("style", "height:54px; overflow-y:hidden;");
   messageInput.addEventListener(
     "keydown",
     (e) => {
-      if(e.key==="Enter" && !e.ctrlKey){
+      if (e.key === "Enter" && !e.ctrlKey) {
         sendMsg(e);
       }
       messageInput.style.height = "54px";
@@ -193,7 +237,7 @@ function getChatMessageBox() {
   sendIcon.setAttribute("alt", "Send Message Button");
   appendChild(sendBtn, [sendIcon]);
   sendBtn.addEventListener("click", sendMsg);
-  let appendex = [CameraBtn, messageInput, sendBtn]
+  let appendex = [CameraBtn, messageInput, sendBtn];
 
   appendChild(form, appendex);
   return form;
@@ -204,29 +248,35 @@ function openCamDialog(e) {
   if (!"mediaDevices" in navigator) return;
   let camPopup = createElement("div", "camPopup");
   camPopup.setAttribute("id", "cameraPopup");
-  let camWraper = createElement("div", "camWrapper")
+  let camWraper = createElement("div", "camWrapper");
   let camView = createElement("video", "cameraView");
 
   camView.setAttribute("autoplay", "");
-  navigator.mediaDevices.getUserMedia({video:{
-    width:640,
-    height:480,
-    facingMode:"user"
-  }, audio:false}).then( stream => {
-    camStream = camView;
-    camView.srcObject = stream;
-  }).catch(console.warn);
+  navigator.mediaDevices
+    .getUserMedia({
+      video: {
+        width: 640,
+        height: 480,
+        facingMode: "user",
+      },
+      audio: false,
+    })
+    .then((stream) => {
+      camStream = camView;
+      camView.srcObject = stream;
+    })
+    .catch(console.warn);
 
   let takeImgBtn = createButton("btn takeImgBtn", "Photobutton", "");
 
-  takeImgBtn.addEventListener('click', e=>{
+  takeImgBtn.addEventListener("click", (e) => {
     e.preventDefault();
     imgCanvas = createElement("canvas", "imgCanvas");
-    imgCanvas.width = 640;//camStream.videoWidth;
-    imgCanvas.height = 480;//camStream.videoHeight;
-    
+    imgCanvas.width = 640; //camStream.videoWidth;
+    imgCanvas.height = 480; //camStream.videoHeight;
+
     let ctx = imgCanvas.getContext("2d");
-    console.log(ctx)
+    console.log(ctx);
     ctx.drawImage(camStream, 0, 0, imgCanvas.width, imgCanvas.height);
     imgUrl = ctx.canvas.toDataURL();
     imgUrl.slice(22);
@@ -236,18 +286,18 @@ function openCamDialog(e) {
     const t = getCookie(ENUM_SET.COOKIE_SET.token);
     camPopup.remove();
     addImagePreviewToMsgForm();
-  })
+  });
 
   appendChild(camWraper, [camView, takeImgBtn]);
   appendChild(camPopup, [camWraper]);
   appendChild(globalContentcontainer, [camPopup]);
 }
 
-function addImagePreviewToMsgForm(){
+function addImagePreviewToMsgForm() {
   let img = createElement("img", "sendImgPreview");
   img.setAttribute("id", "previewImage");
   img.setAttribute("src", imgUrl);
-  appendChild(msgInputForm, [img])
+  appendChild(msgInputForm, [img]);
 }
 
 function appendNewSendMessage(msg) {
@@ -258,7 +308,9 @@ function appendNewSendMessage(msg) {
 
 function getMessageView() {
   var messageViewDiv = createElement("div", "messageview");
-  messageViewDiv.addEventListener("resize", e => {console.log("resize detected");})
+  messageViewDiv.addEventListener("resize", (e) => {
+    console.log("resize detected");
+  });
   fetchmessage(getCookie(ENUM_SET.COOKIE_SET.token))
     .then((r) => {
       if (r.status == ENUM_SET.STATES.falsyToken) {
