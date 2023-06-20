@@ -245,7 +245,7 @@ h5 {
 .addBaner {
   word-break: break-word;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: 0.15em solid #202326; /* The typwriter cursor */
+  border-right: 0.15em solid beige; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: 0.15em; /* Adjust as needed */
@@ -282,7 +282,7 @@ h5 {
   max-height: 480px;
   width: fit-content;
   height: fit-content;
-  border-color: #333;
+  border-color: #1b1c2091;
   z-index: 11;
 
 }
@@ -292,7 +292,7 @@ h5 {
   max-width: 700px;
   max-height: 530px;
   padding: 25px;
-  background-color: rgba(56, 56, 56, 0.637);
+  background-color: #1b1c2091;
 }
 
 
@@ -301,7 +301,7 @@ h5 {
   width: 100%;
   height: 100%;
   display: flex;
-  background-color: rgba(56, 56, 56, 0.281);
+  background-color: #1b1c2091;
 }
 
 .closeCameraView, .closeImgDetailView{
@@ -337,7 +337,7 @@ h5 {
   padding: 8px;
   width: 100%;
   height: 100%;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  box-shadow: #1b1c2091 0px 5px 15px 0px;
 }
 
 .takeImgBtn {
@@ -357,7 +357,7 @@ h5 {
   padding: 4px;
   display: none;
   position: absolute;
-  background-color: rgb(56, 56, 56);
+  background-color: #303133;
   border-radius: 4px;
   right:0;
   min-width: 225px;
@@ -438,7 +438,7 @@ h5 {
 }
 
 input:checked + .slider {
-  background-color: #1d3059;
+  background-color: #315ff3;
 }
 
 input:focus + .slider {
