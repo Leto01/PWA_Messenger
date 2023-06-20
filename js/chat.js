@@ -31,6 +31,7 @@ let camStream;
 let imgCanvas;
 let imgUrl = "";
 let msgInputForm;
+let imgDetailView = false;
 
 export function loadChatPage(callback, uhash) {
   testMyHash = uhash;
@@ -77,7 +78,26 @@ function toggleDropdownVisability() {
   document.getElementById("DropdownMenu").classList.toggle("show");
 }
 
+function openDetailImgView(src){
+  let popup = createElement("div", "imageDetailViewPopup");
+  let img = createElement("img", "detailImageView");
+  img.setAttribute("src", src);
+  let closeIcon = createElement("img", "closeImgDetailView lightIcon");
+  closeIcon.setAttribute("src", "../assets/close.svg");
+  appendChild(popup, [closeIcon, img]);
+  closeIcon.addEventListener("click", () => {
+    imgDetailView=false;
+    popup.remove();
+  });
+  appendChild(globalContentcontainer, [popup]);
+}
+
 window.onclick = function (event) {
+  if(event.target.matches(".messageImage") && !imgDetailView){
+    imgDetailView = true;
+    openDetailImgView(event.target.src);
+  }
+
   if (!event.target.matches(".dropdownContext")) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
