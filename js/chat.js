@@ -336,15 +336,10 @@ function getMessageView() {
               if (m.photoid) {
                 fetchPhoto(m.photoid, getCookie(ENUM_SET.COOKIE_SET.token))
                   .then((res) => {
-                    return res.text();
+                    return res.blob();
                   })
                   .then((res) => {
-                    const url =
-                      "https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getphoto&token=" +
-                      getCookie(ENUM_SET.COOKIE_SET.token) +
-                      "&photoid=" +
-                      m.photoid;
-                    m.imgUrl = url;
+                    m.imgUrl = URL.createObjectURL(res);
                     addImageToMessage(m);
                   });
               }
@@ -375,6 +370,7 @@ function addImageToMessage(mObj) {
   img.setAttribute("alt", "photo");
   img.setAttribute("width", "100%");
   appendChild(e, [img, msg]);
+  scrollDown();
 }
 
 function displayMessage(oMessage) {

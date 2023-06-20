@@ -81,8 +81,8 @@ export async function fetchPhoto(photoId, token){
     photoid: photoId 
   }
   requestOptions.body = JSON.stringify(body);
-  const customHeaderForBlob = {...requestOptions,
-    "responseType": "blob"
+  const customHeaderForBlob = {...requestOptions
   };
+
   return fetch(BASE_URL, customHeaderForBlob);
 }
