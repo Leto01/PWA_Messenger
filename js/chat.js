@@ -189,9 +189,9 @@ function getChatMessageBox() {
   msgInputForm = form;
   var messageInput = createElement("textarea", "messageInput");
   var CameraBtn = createButton("btn cameraBtn", "sendbutton", "");
-  const cameraIcon = createElement("img", "cameraIco darkIcon");
+  const cameraIcon = createElement("img", "cameraIco lightIcon");
   var sendBtn = createButton("btn sendMessageBtn", "sendbutton", "");
-  const sendIcon = createElement("img", "sendIco darkIcon");
+  const sendIcon = createElement("img", "sendIco lightIcon");
   const sendMsg = (e) => {
     e.preventDefault();
     if (messageInput.value.trim() !== "" && imgUrl === "") {
