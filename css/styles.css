@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #262626;
+  background-color: #1b1c20;
 }
 
 body,
@@ -36,15 +36,10 @@ input {
   height: 36px;
 }
 
-.darkIcon {
-}
-
 .submitbutton {
   display: flex;
   justify-content: space-between;
 }
-
-
 
 .errorMsg {
   color: red;
@@ -64,17 +59,17 @@ input {
   margin-bottom: 80px;
   padding-bottom: 20px;
   box-sizing: border-box;
-  
   overflow-y: scroll;
   height: 100%;
 }
 
-.messageBox, .messageview{
-  background-color: #313131;
+.messageBox, .messageview {
+  background-color: #1f2024;
 }
 
 .messageview::-webkit-scrollbar {
   width: 10px;
+  padding-right: 4px;
   height: 95%;
 }
 
@@ -84,7 +79,7 @@ input {
 
 .messageview::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  background-color: #4B4BFF;
+  background-color: #315ff3;
   width: 1px;
 }
 
@@ -92,7 +87,7 @@ input {
   position: relative;
   bottom: 0px;
   padding-bottom: 12px;
-  border-bottom: solid 4px #4B4BFF;
+  border-bottom: solid 4px #315ff3;
   display: flex;
   position: fixed;
   height: fit-content;
@@ -111,7 +106,7 @@ input {
 .prevImg{
   width: 128px;
   height: 96px;
-  border: solid 3px #4B4BFF;
+  border: solid 2px #315ff3;
   border-radius: 6px;
  }
 
@@ -136,7 +131,12 @@ input {
 header {
   width: 60%;
   max-width: 960px;
+  border-right: solid 3px #202326;
+  padding-right: 4px;
+  border-left: solid 3px #202326;
+  padding-left: 4px;
 }
+
 
 header{
   padding-top: 8px;
@@ -212,7 +212,7 @@ h5 {
 
 .message {
   color: beige;
-  background-color: #141414;
+  background-color: #303133;
   margin-top: 16px;
   padding: 8px 8px 4px 8px;
   /* box-shadow: -5px -5px 20px #fff, 5px 5px 20px #9991C9; */
@@ -228,7 +228,7 @@ h5 {
   width: 100%;
   font-size: small;
   text-align: right;
-  color: rgb(205, 212, 221);
+  color: rgb(169, 175, 182);
 }
 
 .messageImage {
@@ -237,14 +237,14 @@ h5 {
 
 .mine {
   margin: 16px 8px 10px auto;
-  background-color: #4B4BFF;
+  background-color: #315ff3;
   border-radius: 12px 12px 2px 12px;
 }
 
 .addBaner {
   word-break: break-word;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: 0.15em solid #9991c9; /* The typwriter cursor */
+  border-right: 0.15em solid #202326; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: 0.15em; /* Adjust as needed */
@@ -331,7 +331,6 @@ h5 {
     max-width: 100vw;
   }
 }
-
 
 .cameraView {
   padding: 8px;
@@ -438,11 +437,11 @@ h5 {
 }
 
 input:checked + .slider {
-  background-color: #4B4BFF;
+  background-color: #1d3059;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #4B4BFF;
+  box-shadow: 0 0 1px #1d3059;
 }
 
 input:checked + .slider:before {
@@ -477,9 +476,13 @@ input:checked + .slider:before {
 }
 
 .messageViewLight{
-  background-color: beige;
+  background-color: #fbfcff;
 }
 
 .lightBackground {
   background-color: white;
+}
+
+.lightText{
+  color:#202326;
 }
