@@ -29,7 +29,7 @@ const d = new Date();
 let globalContentcontainer;
 let camStream;
 let imgCanvas;
-let imgUrl;
+let imgUrl="";
 let msgInputForm;
 
 export function loadChatPage(callback, uhash) {
@@ -53,19 +53,66 @@ function scrollDown() {
 function initHeader() {
   var div = createElement("div", "chatHeaderDiv");
   var title = createElement("h1");
-  title.innerText = "P-WAM";
+  title.innerText = "P-WAM";  
+  
+  //Dropdown Menu on Settings
+  const dropdown = createElement("div", "dropdown")
+
+  //Settingsbutton with icon
+  var settingsIco = createElement("img", "settings dropdownContext lightIcon");
+  settingsIco.setAttribute("src", "../assets/settings.svg");
+  settingsIco.setAttribute("alt", "Open settings");
+  var clickSettings = createElement("div", "settingButton");
+  appendChild(clickSettings, [settingsIco]);
+  clickSettings.addEventListener("click", toggleDropdownVisability);
   var clickLogout = createElement("div", "logoutButton");
-  var logoutIco = createElement("img", "logout lightIcon");
-
-  logoutIco.setAttribute("src", "../assets/logout.svg");
-  logoutIco.setAttribute("alt", "Logout button");
-
   clickLogout.addEventListener("click", onLogout);
 
-  appendChild(clickLogout, [logoutIco]);
-  appendChild(div, [title, clickLogout]);
+  appendChild(dropdown, [clickSettings, createDropdownContent()]);
+  // appendChild(clickLogout, [settingsIco]);
+  appendChild(div, [title, dropdown]);
 
   return div;
+}
+
+function toggleDropdownVisability(){
+  console.log(document.getElementById("DropdownMenu").classList.toggle("show"));
+}
+
+window.addEventListener("click", (e)=>{console.log(e.target)})
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropdownContext') ) {
+    console.log("no button")
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+function createDropdownContent(){
+  var container = createElement("div", "dropdown-content dropdownContext");
+  container.setAttribute("id", "DropdownMenu");
+
+  let toggleContainer = createElement("div", "toggleSwitchContainer dropdownContext")
+  let toggleLabel = createElement("h4", "toggleLabel dropdownContext");
+  toggleLabel.innerText = "Toggle Theme";
+  let toggleTheme = createElement("label", "themetoggle dropdownContext");
+  appendChild(toggleContainer, [toggleLabel, toggleTheme])
+  let checkBox = createElement("input","dropdownContext");
+  checkBox.setAttribute("type", "checkbox")
+  let slider = createElement("span", "slider dropdownContext");
+  appendChild(toggleTheme, [checkBox, slider])
+
+  let logout = createElement("div", "logoutBtn");
+  let deregister = createElement("div", "deregisterBtn");
+  appendChild(container, [toggleContainer]);
+  return container;
 }
 
 function onLogout() {
@@ -189,12 +236,6 @@ function openCamDialog(e) {
     const t = getCookie(ENUM_SET.COOKIE_SET.token);
     camPopup.remove();
     addImagePreviewToMsgForm();
-
-    // sendPicture("Test pic 3", imgUrl.slice(22), t).then(res=>{
-    //   camPopup = '';
-    //   rerender(ENUM_SET.STATES.Chat, undefined, getCookie(ENUM_SET.COOKIE_SET.hash));
-    // })
-
   })
 
   appendChild(camWraper, [camView, takeImgBtn]);
@@ -217,7 +258,7 @@ function appendNewSendMessage(msg) {
 
 function getMessageView() {
   var messageViewDiv = createElement("div", "messageview");
-
+  messageViewDiv.addEventListener("resize", e => {console.log("resize detected");})
   fetchmessage(getCookie(ENUM_SET.COOKIE_SET.token))
     .then((r) => {
       if (r.status == ENUM_SET.STATES.falsyToken) {
