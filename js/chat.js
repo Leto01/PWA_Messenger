@@ -5,7 +5,7 @@ import {
   sendmessage,
   sendPicture,
 } from "./chat.service.js";
-import { deleteCookie, getCookie } from "./cookie.service.js";
+import { deleteCookie, getCookie, setNewCookie } from "./cookie.service.js";
 import {
   ENUM_SET,
   appendChild,
@@ -14,6 +14,7 @@ import {
   createHeadder,
   getEmptyContent,
   getColorOfUserhash,
+  switchTheme
 } from "./helper.js";
 
 var rerender = () => {
@@ -126,7 +127,7 @@ function createDropdownContent() {
   let checkBox = createElement("input", "dropdownContext");
   checkBox.setAttribute("type", "checkbox");
 
-  checkBox.addEventListener("click", switchTheme);
+  checkBox.addEventListener("click", safeSwitchTheme);
 
   let slider = createElement("span", "slider dropdownContext");
   appendChild(toggleTheme, [checkBox, slider]);
@@ -150,23 +151,18 @@ function createDropdownContent() {
   return container;
 }
 
-function switchTheme(e) {
-    var lightIco = document.getElementsByClassName("lightIcon");
-    var i;
-    for (i = 0; i < lightIco.length; i++) {
-      lightIco[i].classList.toggle("turnDarkIcon");
-    }
-    var darkIco = document.getElementsByClassName("darkIcon")
-    for (i = 0; i < darkIco.length; i++) {
-      darkIco[i].classList.toggle("turnLightIcon");
-    }
-    let view = document.getElementsByClassName("messageview");
-    let box = document.getElementsByClassName("messageBox")
-    let viewAndInput = [...view, ...box]
-    for (i = 0; i < viewAndInput.length; i++) {
-      viewAndInput[i].classList.toggle("messageViewLight");
-    }
-    document.getElementsByClassName("contentContainer")[0].classList.toggle("lightBackground")
+function safeSwitchTheme(){
+  const key = ENUM_SET.COOKIE_SET.theme;
+  const dark = ENUM_SET.THEMES.dark;
+  const light = ENUM_SET.THEMES.light
+  let targetTheme = light;
+  let t = getCookie(key);
+  if(t === light)
+  {
+    targetTheme = dark;
+  }
+  setNewCookie(key, targetTheme);
+  switchTheme();
 }
 
 function onLogout() {
@@ -402,7 +398,7 @@ function displayMessage(oMessage) {
   }
   var messageContainer = createElement(
     "div",
-    "message" + (isMe ? " mine" : "") + " top"
+    "message" + (isMe ? " mine" : " otherMsg") + " top"
   );
   messageContainer.setAttribute("id", oMessage.id);
   var userName = createElement(

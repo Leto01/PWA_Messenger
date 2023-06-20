@@ -54,7 +54,12 @@ export const ENUM_SET = {
     token: "token",
     username: "userName",
     hash: "hash",
-    state: "state"
+    state: "state",
+    theme: "theme"
+  },
+  THEMES:{
+    dark: 0,
+    light: 1
   },
   STATES: {
     Login: 1,
@@ -92,4 +97,34 @@ export const getColorOfUserhash = (hash) =>{
   const newEntry = {hash:hash, id: (lastMap+1)};
   mapedHash.push(newEntry);
   return res + colorMap[newEntry.id] + ";";
+}
+
+export function switchTheme(e) {
+  var lightIco = document.getElementsByClassName("lightIcon");
+  var i;
+  for (i = 0; i < lightIco.length; i++) {
+    lightIco[i].classList.toggle("turnDarkIcon");
+  }
+  var darkIco = document.getElementsByClassName("darkIcon")
+  for (i = 0; i < darkIco.length; i++) {
+    darkIco[i].classList.toggle("turnLightIcon");
+  }
+  let view = document.getElementsByClassName("messageview");
+  let box = document.getElementsByClassName("messageBox");
+  let header = document.getElementsByTagName("header");
+  let viewAndInput = [...view, ...box, ...header]
+  for (i = 0; i < viewAndInput.length; i++) {
+    viewAndInput[i].classList.toggle("messageViewLight");
+  }
+  document.getElementsByClassName("contentContainer")[0].classList.toggle("lightBackground")
+  let messages = document.getElementsByClassName("otherMsg");
+  for (i = 0; i < messages.length; i++) {
+    messages[i].classList.toggle("lightMessage");
+  }
+  let btn = document.getElementsByClassName("btn");
+  let txtarea = document.getElementsByClassName("messageInput");
+  let chatCtrls = [...btn, ...txtarea];
+  for (i = 0; i < chatCtrls.length; i++) {
+    chatCtrls[i].classList.toggle("lightInput");
+  }
 }

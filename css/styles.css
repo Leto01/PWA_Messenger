@@ -478,12 +478,15 @@ input:checked + .slider:before {
 
 .messageViewLight{
   background-color: #fbfcff;
+  border-left: solid 3px #d9dbdb;
+  border-right: solid 3px #d9dbdb;
 }
 
 .lightBackground {
-  background-color: white;
+  background-color: #edf0f7;
 }
 
-.lightText{
+.lightMessage, .lightInput{
   color:#202326;
+  background-color: #e7ebf4;
 }
