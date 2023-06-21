@@ -14,19 +14,24 @@ var logoutSuccess = false;
 if (getCookie(ENUM_SET.COOKIE_SET.token) !== "")
   state = getCookie(ENUM_SET.COOKIE_SET.state) + 0;
 
-window.onload = () => {
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("/sw.js")
       .then((reg) => {
         console.log("[app.js] - SERVICEWORKER REGISTERED");
-        initApp();
+        loginErrorMessage = "Success SW Register";
       })
       .catch((error) => {
         console.warn("[app.js] - FAILED TO REGISTER SERVICEWORKER", error);
+        loginErrorMessage = "FAILED: SW Register";
       });
   }
-};
+  
+  window.addEventListener("load", e=>{
+    console.log("Onload Fired")
+    initApp();
+  })
 
 function initApp() {
   document.body.addEventListener("spaContentLoaded", console.log);
