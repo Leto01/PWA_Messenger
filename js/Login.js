@@ -42,18 +42,14 @@ function validateLoginResponse(data) {
 }
 
 function pageLoginSent(pw, id) {
-  console.log("call Login:");
   login(id, pw)
     .then((r) => {
-      console.log(r)
       r.json().then((data) => {
-        console.log(data)
         validateLoginResponse(data);
       })
     }
     )
     .catch((err) => {
-      console.error(err);
       rerender(ENUM_SET.STATES.Login, err);
     });
 }

@@ -9,23 +9,23 @@ import { ENUM_SET } from "./helper.js";
  */
 
 var loginErrorMessage = undefined;
-var state = getCookie("state")||ENUM_SET.STATES.Login;
+var state = getCookie("state") || ENUM_SET.STATES.Login;
 var logoutSuccess = false;
-if(getCookie(ENUM_SET.COOKIE_SET.token) !== "") state = getCookie(ENUM_SET.COOKIE_SET.state)+0;
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/sw.js")
-    .then((reg) => {
-      console.log("SW registered", reg);
-    })
-    .catch((error) => {
-      console.warn("SW not registered", error);
-    });
-}
+if (getCookie(ENUM_SET.COOKIE_SET.token) !== "")
+  state = getCookie(ENUM_SET.COOKIE_SET.state) + 0;
 
 window.onload = () => {
-  initApp();
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((reg) => {
+        console.log("[app.js] - SERVICEWORKER REGISTERED");
+        initApp();
+      })
+      .catch((error) => {
+        console.warn("[app.js] - FAILED TO REGISTER SERVICEWORKER", error);
+      });
+  }
 };
 
 function initApp() {
@@ -33,7 +33,7 @@ function initApp() {
   const s = parseInt(getCookie(ENUM_SET.COOKIE_SET.state));
   const h = getCookie(ENUM_SET.COOKIE_SET.hash);
   state = s;
-  renderPage(h)
+  renderPage(h);
 }
 
 function updateApp(newState, loginerror, userhash, successMsg) {
