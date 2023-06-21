@@ -29,9 +29,7 @@ const ASSET_ITEMS = [
 ];
 
 function netFirst(e) {
-
   const fetchOrCache = async () => {
-
     let reqClone = e.request.clone();
     const body = JSON.parse(await reqClone.text());
     try {
