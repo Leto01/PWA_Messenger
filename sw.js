@@ -1,6 +1,6 @@
 const VERSION = {
-  STATIC: "2",
-  DYNAMIC: "2",
+  STATIC: "3",
+  DYNAMIC: "3",
 };
 const CACHES = {
   STATIC: `PWAM_STATIC_${VERSION.STATIC}`,
