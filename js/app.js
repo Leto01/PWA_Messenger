@@ -18,18 +18,16 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/sw.js")
     .then((reg) => {
-      console.log("[app.js] - SERVICEWORKER REGISTERED");
       loginErrorMessage = "Success SW Register";
     })
     .catch((error) => {
-      console.warn("[app.js] - FAILED TO REGISTER SERVICEWORKER", error);
       loginErrorMessage = "FAILED: SW Register";
     });
 }
 
 window.addEventListener("load", (e) => {
-  console.log("Onload Fired");
   initApp();
+  handleTheme();
 });
 
 function initApp() {
@@ -65,12 +63,12 @@ function renderPage(userhash) {
       loadLoginPage(updateApp, loginErrorMessage);
       break;
   }
-  handleTheme();
 }
 
 const handleTheme = () => {
   const cachedTheme = getCookie(ENUM_SET.COOKIE_SET.theme);
-  if (cachedTheme == ENUM_SET.THEMES.light) {
+  if (cachedTheme == ENUM_SET.THEMES.light && !document.body.classList.contains("lightTheme")) {
+    console.log("Switching Theme")
     switchTheme();
   }
 };
