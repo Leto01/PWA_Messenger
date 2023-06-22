@@ -281,7 +281,7 @@ function openCamDialog(e) {
   camPopup.setAttribute("id", "cameraPopup");
   let camWraper = createElement("div", "camWrapper");
   let camView = createElement("video", "cameraView");
-  let closeIcon = createElement("img", "closeCameraView");
+  let closeIcon = createElement("img", "closeCameraView darkIcon");
   closeIcon.setAttribute("src", "../assets/close.svg");
   closeIcon.addEventListener("click", closeCameraView);
   camView.setAttribute("autoplay", "");
@@ -324,7 +324,7 @@ function openCamDialog(e) {
 
 function addImagePreviewToMsgForm() {
   let prevDiv = createElement("div", "sendImgPreview");
-  let closeIco = createElement("img", "closePreview");
+  let closeIco = createElement("img", "closePreview darkIcon");
   closeIco.addEventListener("click", onCloseImgPreview)
   closeIco.setAttribute("src", "../assets/close.svg");
   let img = createElement("img", "prevImg");

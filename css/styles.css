@@ -464,8 +464,8 @@ input:checked + .slider:before {
 /* For switching theme color */
 
 .darkIcon {
-  filter: invert(13%) sepia(0%) saturate(754%) hue-rotate(197deg)
-    brightness(90%) contrast(92%);
+  filter: invert(29%) sepia(66%) saturate(5195%) hue-rotate(225deg)
+    brightness(104%) contrast(91%);
 }
 
 .lightIcon {
@@ -473,37 +473,9 @@ input:checked + .slider:before {
     brightness(104%) contrast(92%);
 }
 
-.turnLightIcon {
-  filter: invert(98%) sepia(41%) saturate(409%) hue-rotate(334deg)
-    brightness(104%) contrast(92%);
-}
-.turnDarkIcon {
-  /* filter: invert(13%) sepia(0%) saturate(754%) hue-rotate(197deg)
-    brightness(90%) contrast(92%); */
-  filter: invert(29%) sepia(66%) saturate(5195%) hue-rotate(225deg)
-    brightness(104%) contrast(91%);
-}
-
-.messageViewLight {
-  background-color: #fbfcff;
-  border-left: solid 3px #d9dbdb;
-  border-right: solid 3px #d9dbdb;
-}
-
-.lightBackground {
-  background-color: #edf0f7;
-}
-
-.lightMessage,
-.lightInput {
-  color: #202326;
-  background-color: #e7ebf4;
-}
-
 .darkPageTitle,
 .lightTheme h1,
-.lightTheme .title_h3
-{
+.lightTheme .title_h3 {
   color: #315ff3;
 }
 
@@ -539,8 +511,8 @@ input:checked + .slider:before {
   background-color: #e7ebf4;
 }
 
-.lightTheme .dropdown-content .deregisterTitle{
-  color:red;
+.lightTheme .dropdown-content .deregisterTitle {
+  color: red;
 }
 
 .lightTheme .imageDetailViewPopup {
