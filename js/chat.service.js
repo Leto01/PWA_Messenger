@@ -38,10 +38,10 @@ export async function register(id, pw, nickname, fullname) {
   return await makeFetch(body);
 }
 
-export async function deregister(token) {
-  //TODO
+export async function deregister(uid, token) {
   const body ={
     request: "deregister",
+    userid: uid,
     token: token,
   };
   return await makeFetch(body);

@@ -4,6 +4,7 @@ import {
   logout,
   sendmessage,
   sendPicture,
+  deregister
 } from "./chat.service.js";
 import { deleteCookie, getCookie, setNewCookie } from "./cookie.service.js";
 import {
@@ -45,6 +46,7 @@ export function loadChatPage(callback, uhash) {
   var headercontent = initHeader();
   var header = createHeadder(headercontent);
   appendChild(c, [header, messageView, messageBox]);
+  console.log("Load Chat Page")
 }
 
 function scrollDown() {
@@ -145,6 +147,7 @@ function createDropdownContent() {
   deregIco.setAttribute("src", "../assets/delete_forever.svg");
   let deregisterTitle = createElement("h3", "deregisterTitle dropdownContext");
   deregisterTitle.innerText = "Delete Account";
+  deregIco.addEventListener("click", onDeregsiter);
   appendChild(deregister, [deregisterTitle, deregIco]);
 
   appendChild(container, [toggleContainer, logout, deregister]);
@@ -154,10 +157,10 @@ function createDropdownContent() {
 function safeSwitchTheme(){
   const key = ENUM_SET.COOKIE_SET.theme;
   const dark = ENUM_SET.THEMES.dark;
-  const light = ENUM_SET.THEMES.light
-  let targetTheme = light;
-  let t = getCookie(key);
-  if(t === light)
+  const light = ENUM_SET.THEMES.light;
+  let targetTheme = light; 
+  let currentTheme = getCookie(key);
+  if(currentTheme == light || currentTheme == "")
   {
     targetTheme = dark;
   }
@@ -165,19 +168,34 @@ function safeSwitchTheme(){
   switchTheme();
 }
 
+function onDeregsiter(){
+  let input = window.prompt("Type in your userID to confirm the deletion of your account.");
+  const uid = getCookie(ENUM_SET.COOKIE_SET.userId);
+  if(input == uid){
+    deregister(uid, getCookie(ENUM_SET.COOKIE_SET.token)).then(res => {
+    cleanCache(undefined, "Account deleted.");
+  }).catch(err => {
+    console.log(err);
+    window.alert("Failed to delete this account!");
+  })}else{
+    window.alert("Failed: Wrong userID!")
+  }
+}
+
 function onLogout() {
   const token = getCookie(ENUM_SET.COOKIE_SET.token);
   logout(token)
     .then(() => {
-      cleanCache(undefined, true);
+      cleanCache(undefined);
     })
     .catch(console.error);
 }
 
-function cleanCache(errorMsg, success = false) {
+function cleanCache(errorMsg, successMsg) {
   deleteCookie(ENUM_SET.COOKIE_SET.hash);
   deleteCookie(ENUM_SET.COOKIE_SET.token);
-  rerender(ENUM_SET.STATES.Login, errorMsg, undefined, "Logout success");
+  setNewCookie(ENUM_SET.COOKIE_SET.userId, "", -1);
+  rerender(ENUM_SET.STATES.Login, errorMsg, undefined, successMsg);
 }
 
 function getChatMessageBox() {

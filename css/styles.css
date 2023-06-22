@@ -63,7 +63,8 @@ input {
   height: 100%;
 }
 
-.messageBox, .messageview {
+.messageBox,
+.messageview {
   background-color: #1f2024;
 }
 
@@ -103,14 +104,14 @@ input {
   bottom: 75px;
 }
 
-.prevImg{
+.prevImg {
   width: 128px;
   height: 96px;
   border: solid 2px #315ff3;
   border-radius: 6px;
- }
+}
 
-.closePreview{
+.closePreview {
   position: absolute;
   left: 98px;
   bottom: 70px;
@@ -137,8 +138,7 @@ header {
   padding-left: 4px;
 }
 
-
-header{
+header {
   padding-top: 8px;
   padding-bottom: 8px;
 }
@@ -149,8 +149,6 @@ header{
   header {
     min-width: 620px;
   }
-
-  
 }
 @media screen and (max-width: 620px) {
   .messageBox,
@@ -169,8 +167,12 @@ textarea {
   border-radius: 32px;
   padding: 16px;
   background-color: #303133;
-  color:beige;
+  color: beige;
   margin-top: 16px;
+}
+
+.successLogout {
+  color: green;
 }
 
 .sendMessageBtn {
@@ -269,11 +271,12 @@ h5 {
     border-color: transparent;
   }
   50% {
-    border-color: #9991c9;
+    border-color: #315ff3;
   }
 }
 
-.camPopup, .imageDetailViewPopup {
+.camPopup,
+.imageDetailViewPopup {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -284,7 +287,6 @@ h5 {
   height: fit-content;
   border-color: #1b1c2091;
   z-index: 11;
-
 }
 
 .imageDetailViewPopup {
@@ -295,7 +297,6 @@ h5 {
   background-color: #1b1c2091;
 }
 
-
 .camWrapper {
   position: relative;
   width: 100%;
@@ -304,31 +305,30 @@ h5 {
   background-color: #1b1c2091;
 }
 
-.closeCameraView, .closeImgDetailView{
+.closeCameraView,
+.closeImgDetailView {
   position: absolute;
-  width:40px;
+  width: 40px;
   height: 40px;
   right: 4px;
   top: 4px;
   z-index: 13;
 }
 
-.detailImageView{
+.detailImageView {
   max-width: 640px;
   max-height: 480px;
-  
 }
 
-.closeImgDetailView{
+.closeImgDetailView {
   right: -6px;
   top: -6px;
 }
 @media screen and (max-width: 699px) {
-  .detailImageView
-  {
+  .detailImageView {
     max-width: calc(100vw - 100px);
   }
-  .imageDetailViewPopup{
+  .imageDetailViewPopup {
     max-width: 100vw;
   }
 }
@@ -359,7 +359,7 @@ h5 {
   position: absolute;
   background-color: #303133;
   border-radius: 4px;
-  right:0;
+  right: 0;
   min-width: 225px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -370,24 +370,30 @@ h5 {
   flex-direction: column;
 }
 
-.deregisterTitle{
-    color: red;
+.deregisterTitle {
+  color: red;
 }
-.logoutTitle, .toggleLabel, .deregisterTitle{
-    padding-left: 8px;
-    padding-top: 7px;
+.logoutTitle,
+.toggleLabel,
+.deregisterTitle {
+  padding-left: 8px;
+  padding-top: 7px;
 }
 .deregIcon {
-    filter: invert(24%) sepia(87%) saturate(7361%) hue-rotate(8deg) brightness(93%) contrast(130%);
+  filter: invert(24%) sepia(87%) saturate(7361%) hue-rotate(8deg)
+    brightness(93%) contrast(130%);
 }
-.toggleSwitchContainer, .logoutBtn, .deregisterBtn{
-    display: flex;
-    justify-content: space-between;
-    padding-right: 4px;
+.toggleSwitchContainer,
+.logoutBtn,
+.deregisterBtn {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 4px;
 }
 
-.logoutBtn, .deregisterBtn{
-    margin-top: 24px;
+.logoutBtn,
+.deregisterBtn {
+  margin-top: 24px;
 }
 
 /* .deregisterBtn{
@@ -395,8 +401,8 @@ h5 {
 } */
 
 /*Toggle of Theme Styling*/
-.toggleSwitchContainer{
-    margin-top: 8px;
+.toggleSwitchContainer {
+  margin-top: 8px;
 }
 
 .themetoggle {
@@ -462,21 +468,23 @@ input:checked + .slider:before {
     brightness(90%) contrast(92%);
 }
 
-.lightIcon{
+.lightIcon {
   filter: invert(98%) sepia(41%) saturate(409%) hue-rotate(334deg)
     brightness(104%) contrast(92%);
 }
 
-.turnLightIcon{
+.turnLightIcon {
   filter: invert(98%) sepia(41%) saturate(409%) hue-rotate(334deg)
     brightness(104%) contrast(92%);
 }
 .turnDarkIcon {
-  filter: invert(13%) sepia(0%) saturate(754%) hue-rotate(197deg)
-    brightness(90%) contrast(92%);
+  /* filter: invert(13%) sepia(0%) saturate(754%) hue-rotate(197deg)
+    brightness(90%) contrast(92%); */
+  filter: invert(29%) sepia(66%) saturate(5195%) hue-rotate(225deg)
+    brightness(104%) contrast(91%);
 }
 
-.messageViewLight{
+.messageViewLight {
   background-color: #fbfcff;
   border-left: solid 3px #d9dbdb;
   border-right: solid 3px #d9dbdb;
@@ -486,7 +494,55 @@ input:checked + .slider:before {
   background-color: #edf0f7;
 }
 
-.lightMessage, .lightInput{
-  color:#202326;
+.lightMessage,
+.lightInput {
+  color: #202326;
   background-color: #e7ebf4;
+}
+
+.darkPageTitle,
+.lightTheme h1,
+.lightTheme .title_h3
+{
+  color: #315ff3;
+}
+
+.lightTheme .lightIcon {
+  filter: invert(29%) sepia(66%) saturate(5195%) hue-rotate(225deg)
+    brightness(104%) contrast(91%);
+}
+
+.lightTheme .darkIcon {
+  filter: invert(29%) sepia(66%) saturate(5195%) hue-rotate(225deg)
+    brightness(104%) contrast(91%);
+}
+
+.lightTheme .messageview,
+.lightTheme .messageBox,
+.lightTheme header {
+  background-color: #fbfcff;
+  border-left: solid 3px #d9dbdb;
+  border-right: solid 3px #d9dbdb;
+}
+
+.lightTheme .contentContainer {
+  background-color: #edf0f7;
+}
+
+.lightTheme .otherMsg,
+.lightTheme .btn,
+.lightTheme .messageInput,
+.lightTheme input,
+.lightTheme .dropdown-content,
+.lightTheme .dropdown-content h3 {
+  color: #202326;
+  background-color: #e7ebf4;
+}
+
+.lightTheme .dropdown-content .deregisterTitle{
+  color:red;
+}
+
+.lightTheme .imageDetailViewPopup {
+  background-color: #d8dce460;
 }

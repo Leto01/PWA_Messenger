@@ -3,7 +3,7 @@ import { loadRegisterPage } from "./Register.js";
 import { loadLoginPage } from "./Login.js";
 import { loadChatPage } from "./chat.js";
 import { getCookie, setNewCookie } from "./cookie.service.js";
-import { ENUM_SET } from "./helper.js";
+import { ENUM_SET, switchTheme } from "./helper.js";
 /**
  * every page needs to refer to this js-file
  */
@@ -14,24 +14,23 @@ var logoutSuccess = false;
 if (getCookie(ENUM_SET.COOKIE_SET.token) !== "")
   state = getCookie(ENUM_SET.COOKIE_SET.state) + 0;
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/sw.js")
+    .then((reg) => {
+      console.log("[app.js] - SERVICEWORKER REGISTERED");
+      loginErrorMessage = "Success SW Register";
+    })
+    .catch((error) => {
+      console.warn("[app.js] - FAILED TO REGISTER SERVICEWORKER", error);
+      loginErrorMessage = "FAILED: SW Register";
+    });
+}
 
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("/sw.js")
-      .then((reg) => {
-        console.log("[app.js] - SERVICEWORKER REGISTERED");
-        loginErrorMessage = "Success SW Register";
-      })
-      .catch((error) => {
-        console.warn("[app.js] - FAILED TO REGISTER SERVICEWORKER", error);
-        loginErrorMessage = "FAILED: SW Register";
-      });
-  }
-  
-  window.addEventListener("load", e=>{
-    console.log("Onload Fired")
-    initApp();
-  })
+window.addEventListener("load", (e) => {
+  console.log("Onload Fired");
+  initApp();
+});
 
 function initApp() {
   document.body.addEventListener("spaContentLoaded", console.log);
@@ -39,6 +38,7 @@ function initApp() {
   const h = getCookie(ENUM_SET.COOKIE_SET.hash);
   state = s;
   renderPage(h);
+  handleTheme();
 }
 
 function updateApp(newState, loginerror, userhash, successMsg) {
@@ -50,6 +50,7 @@ function updateApp(newState, loginerror, userhash, successMsg) {
 }
 
 function renderPage(userhash) {
+  handleTheme();
   switch (state) {
     case ENUM_SET.STATES.Login:
       loadLoginPage(updateApp, loginErrorMessage, logoutSuccess);
@@ -64,4 +65,12 @@ function renderPage(userhash) {
       loadLoginPage(updateApp, loginErrorMessage);
       break;
   }
+  handleTheme();
 }
+
+const handleTheme = () => {
+  const cachedTheme = getCookie(ENUM_SET.COOKIE_SET.theme);
+  if (cachedTheme == ENUM_SET.THEMES.light) {
+    switchTheme();
+  }
+};

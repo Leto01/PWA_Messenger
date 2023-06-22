@@ -23,20 +23,23 @@ export function loadLoginPage(callback, err, successLogout) {
     c.appendChild(errorMsg);
   }
   if (successLogout){
-    // var successMsg = createElement("div", "successLogout");
-    // successMsg.innerHTML = successLogout;
-    // c.appendChild(successMsg);
+    var successMsg = createElement("div", "successLogout");
+    successMsg.innerHTML = successLogout;
+    c.appendChild(successMsg);
   }
   appendChild(c, [feeldSet]);
 }
 
-function validateLoginResponse(data) {
+function validateLoginResponse(data, uid) {
   const status = data.status;
   if (status != "error") {
     setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
     setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
+    setNewCookie(ENUM_SET.COOKIE_SET.userId, uid, 1);
+    console.log(uid)
     rerender(ENUM_SET.STATES.Chat, undefined, data.hash);
   } else {
+    setNewCookie(ENUM_SET.COOKIE_SET.userId, "", -1);
     rerender(ENUM_SET.STATES.Login, data.message);
   }
 }
@@ -45,7 +48,7 @@ function pageLoginSent(pw, id) {
   login(id, pw)
     .then((r) => {
       r.json().then((data) => {
-        validateLoginResponse(data);
+        validateLoginResponse(data, id);
       })
     }
     )

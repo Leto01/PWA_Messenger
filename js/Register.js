@@ -96,8 +96,9 @@ function pageRegisterSent(id, fullName, nickname, pw) {
       if (data.code === 200) {
         setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
         setNewCookie(ENUM_SET.COOKIE_SET.username, nickname, 1);
+        setNewCookie(ENUM_SET.COOKIE_SET.userId, id, 1);
         setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
-        rerender(ENUM_SET.STATES.Chat, data.hash);
+        rerender(ENUM_SET.STATES.Chat, undefined, data.hash);
       } else {
 
       }
