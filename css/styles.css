@@ -396,9 +396,19 @@ h5 {
   margin-top: 24px;
 }
 
-/* .deregisterBtn{
-    margin-top: 36px;
-} */
+.rememberMe{
+  padding-top: 4px;
+}
+
+.stayLoggedInTickBox{
+  width: 20px;
+  padding: 0px;
+  margin-top:0;
+}
+
+.tickLabel{
+  width:100%;
+}
 
 /*Toggle of Theme Styling*/
 .toggleSwitchContainer {

@@ -67,6 +67,14 @@ function getFeeldSet() {
   var form = createElement("form", "content login");
   var div = createElement("div", "inputfield");
   var h1Title = createElement("h1", "title_h2");
+  var stayLoggedInTickBox = createElement("input", "stayLoggedInTickBox")
+  stayLoggedInTickBox.setAttribute("type", "checkbox");
+  stayLoggedInTickBox.setAttribute("id", "tickbox1");
+  var tickboxlabel = createElement("label", "tickLabel");
+  tickboxlabel.setAttribute("for", "tickbox1");
+  tickboxlabel.innerText = "Stay logged in"
+  var remembermeDialog = createElement("div", "rememberMe");
+  appendChild(remembermeDialog, [ stayLoggedInTickBox, tickboxlabel]);
   h1Title.innerText = "P-WAM";
   appendChild(form, [div]);
   appendChild(container, [h1Title, LoginAdd(), form])
@@ -78,7 +86,7 @@ function getFeeldSet() {
     "Password",
     5
   );
-  appendChild(div, [inputName, brk, inputPassword]);
+  appendChild(div, [inputName, brk, inputPassword, createElement("br"), remembermeDialog]);
 
   var divButton = createElement("div", "submitbutton");
   var btn = createButton("btn", "login", "LOGIN");
