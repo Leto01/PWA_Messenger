@@ -408,6 +408,7 @@ h5 {
 
 .tickLabel{
   width:100%;
+  color: beige;
 }
 
 /*Toggle of Theme Styling*/
@@ -516,9 +517,13 @@ input:checked + .slider:before {
 .lightTheme .messageInput,
 .lightTheme input,
 .lightTheme .dropdown-content,
-.lightTheme .dropdown-content h3 {
+.lightTheme .dropdown-content h3{
   color: #202326;
   background-color: #e7ebf4;
+}
+
+.lightTheme .tickLabel {
+  color: #202326;
 }
 
 .lightTheme .dropdown-content .deregisterTitle {
