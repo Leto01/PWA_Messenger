@@ -1,5 +1,5 @@
 const VERSION = {
-  STATIC: "3",
+  STATIC: "5",
   DYNAMIC: "3",
 };
 const CACHES = {
