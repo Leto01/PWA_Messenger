@@ -7,6 +7,10 @@ export function setNewCookie(key, value, expireInDays) {
   document.cookie = `${key}=${value}` + (expireInDays ? ";" + d + ";path=/" : "");
 }
 
+export function setSessionCookie(key, value){
+  document.cookie = `${key}=${value}`;
+}
+
 export function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
