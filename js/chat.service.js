@@ -38,10 +38,10 @@ export async function register(id, pw, nickname, fullname) {
   return await makeFetch(body);
 }
 
-export async function deregister(token) {
-  //TODO
+export async function deregister(uid, token) {
   const body ={
     request: "deregister",
+    userid: uid,
     token: token,
   };
   return await makeFetch(body);
@@ -53,6 +53,16 @@ export async function sendmessage(msg, token) {
     token: token,
     text: msg,
   };
+  return await makeFetch(body);
+}
+
+export async function sendPicture(msg, img, token){
+  const body = {
+    request: "sendmessage",
+    token: token,
+    text: msg,
+    photo: img
+  }
   return await makeFetch(body);
 }
 
@@ -71,8 +81,8 @@ export async function fetchPhoto(photoId, token){
     photoid: photoId 
   }
   requestOptions.body = JSON.stringify(body);
-  const customHeaderForBlob = {...requestOptions,
-    "responseType": "blob"
+  const customHeaderForBlob = {...requestOptions
   };
+
   return fetch(BASE_URL, customHeaderForBlob);
 }

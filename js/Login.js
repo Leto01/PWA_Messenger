@@ -27,33 +27,32 @@ export function loadLoginPage(callback, err, successLogout) {
     successMsg.innerHTML = successLogout;
     c.appendChild(successMsg);
   }
-  appendChild(c, [LoginAdd(), feeldSet]);
+  appendChild(c, [feeldSet]);
 }
 
-function validateLoginResponse(data) {
+function validateLoginResponse(data, uid) {
   const status = data.status;
   if (status != "error") {
     setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
     setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
+    setNewCookie(ENUM_SET.COOKIE_SET.userId, uid, 1);
+    console.log(uid)
     rerender(ENUM_SET.STATES.Chat, undefined, data.hash);
   } else {
+    setNewCookie(ENUM_SET.COOKIE_SET.userId, "", -1);
     rerender(ENUM_SET.STATES.Login, data.message);
   }
 }
 
 function pageLoginSent(pw, id) {
-  console.log("call Login:");
   login(id, pw)
     .then((r) => {
-      console.log(r)
       r.json().then((data) => {
-        console.log(data)
-        validateLoginResponse(data);
+        validateLoginResponse(data, id);
       })
     }
     )
     .catch((err) => {
-      console.error(err);
       rerender(ENUM_SET.STATES.Login, err);
     });
 }
@@ -64,12 +63,21 @@ function onRegister(e) {
 }
 
 function getFeeldSet() {
+  var container = createElement("div", "loginContainer")
   var form = createElement("form", "content login");
   var div = createElement("div", "inputfield");
-  var h2Title = createElement("h2", "title_h2");
-  h2Title.innerText = "P-WAM";
-  appendChild(form, [h2Title, div]);
-
+  var h1Title = createElement("h1", "title_h2");
+  var stayLoggedInTickBox = createElement("input", "stayLoggedInTickBox")
+  stayLoggedInTickBox.setAttribute("type", "checkbox");
+  stayLoggedInTickBox.setAttribute("id", "tickbox1");
+  var tickboxlabel = createElement("label", "tickLabel");
+  tickboxlabel.setAttribute("for", "tickbox1");
+  tickboxlabel.innerText = "Stay logged in"
+  var remembermeDialog = createElement("div", "rememberMe");
+  appendChild(remembermeDialog, [ stayLoggedInTickBox, tickboxlabel]);
+  h1Title.innerText = "P-WAM";
+  appendChild(form, [div]);
+  appendChild(container, [h1Title, LoginAdd(), form])
   const inputName = makeInput("text", "userId", "User ID", 8);
   const brk = createElement("br");
   const inputPassword = makeInput(
@@ -78,7 +86,7 @@ function getFeeldSet() {
     "Password",
     5
   );
-  appendChild(div, [inputName, brk, inputPassword]);
+  appendChild(div, [inputName, brk, inputPassword, createElement("br"), remembermeDialog]);
 
   var divButton = createElement("div", "submitbutton");
   var btn = createButton("btn", "login", "LOGIN");
@@ -104,11 +112,11 @@ function getFeeldSet() {
   appendChild(divButton, [btn, regBtn]);
   appendChild(form, [divButton]);
 
-  return form;
+  return container;
 }
 
 function LoginAdd() {
   let div = createElement("h4", "addBaner");
-  div.innerText = "Use P-WAM for messaging your mates from class"
+  div.innerText = "Apps & UX Messenger"
   return div;
 }

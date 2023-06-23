@@ -22,12 +22,13 @@ export function loadRegisterPage(callback) {
 }
 
 function getFeeldSet() {
+  var container = createElement("div", "loginContainer")
   var form = createElement("form", "content register");
   var div = createElement("div", "inputfield");
   var h3Title = createElement("h3", "title_h3");
   h3Title.innerText = "Register here";
-  appendChild(form, [h3Title, div]);
-
+  appendChild(form, [div]);
+  appendChild(container, [h3Title, form])
   const inputName = makeInput("text", "userId", "HS-ID (=8 Char)", 8);
   const inputFullName = makeInput("text", "fullName", "Full Name", 1);
   const inputNickName = makeInput("text", "nickname", "Nickname", 1);
@@ -45,16 +46,16 @@ function getFeeldSet() {
     5
   );
   appendChild(div, [
-    inputName,
-    inputFullName,
-    inputNickName,
-    inputPassword,
+    inputName,createElement("br"),
+    inputFullName, createElement("br"),
+    inputNickName, createElement("br"),
+    inputPassword, createElement("br"),
     inputPasswordRepeat,
   ]);
 
   var divButton = createElement("div", "submitbutton");
   var btn = createButton("btn", "register", "REGISTER");
-  var returnToLogin = createButton("btn", "return", "RETURN TO LOGIN");
+  var returnToLogin = createButton("btn", "return", "LOGIN");
   returnToLogin.addEventListener(
     "click",
     () => {
@@ -74,7 +75,8 @@ function getFeeldSet() {
 
   form.addEventListener("input", btnEnabler);
 
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
     pageRegisterSent(
       inputName.value,
       inputFullName.value,
@@ -85,20 +87,21 @@ function getFeeldSet() {
 
   appendChild(divButton, [btn, returnToLogin]);
   appendChild(form, [divButton]);
-  return form;
+  return container;
 }
 
 function pageRegisterSent(id, fullName, nickname, pw) {
-  register(id, pw, nickname, fullName).then((res) =>
+  register(id, pw, nickname, fullName).then((res) =>{
     res.json().then((data) => {
       if (data.code === 200) {
         setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
         setNewCookie(ENUM_SET.COOKIE_SET.username, nickname, 1);
+        setNewCookie(ENUM_SET.COOKIE_SET.userId, id, 1);
         setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
-        rerender(ENUM_SET.STATES.Chat, data.hash);
+        rerender(ENUM_SET.STATES.Chat, undefined, data.hash);
       } else {
 
       }
-    })
-  );
+    })}
+  ).catch(err => { console.log(err)});
 }

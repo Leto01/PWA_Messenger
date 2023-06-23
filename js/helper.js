@@ -31,8 +31,8 @@ export function makeInput(t, n, ph, minLen) {
   n ? (input.name = n) : undefined;
   //input.minlength = minLen;
   // input.required;
-  minLen ? input.setAttribute("minlength", minLen) : undefined;
-  input.setAttribute("required", "");
+  // minLen ? input.setAttribute("minlength", minLen) : undefined;
+  // input.setAttribute("required", "");
   return input;
 }
 
@@ -54,7 +54,13 @@ export const ENUM_SET = {
     token: "token",
     username: "userName",
     hash: "hash",
-    state: "state"
+    state: "state",
+    theme: "theme",
+    userId: "uid"
+  },
+  THEMES:{
+    dark: 0,
+    light: 1
   },
   STATES: {
     Login: 1,
@@ -63,3 +69,37 @@ export const ENUM_SET = {
     falsyToken: 456
   },
 };
+
+export const colorMap = {
+  1:"#dfff1a",
+  2:"#e8c80e",
+  3:"#ffb31c",
+  4:"#e86d0e",
+  5:"#ff3912",
+  6:"#6dfe01",
+  7:"#e8d60e",
+  8:"#e8590e",
+  9:"#ffc95e",
+  10:"#eb936e",
+  11:"#fe8bb6"
+}
+
+const MAX_COLOR_ID = 11;
+let mapedHash = [];
+
+export const getColorOfUserhash = (hash) =>{
+  let res = "color:";
+  let lastMap = 0;
+  for(let h of mapedHash){
+    if(h.hash === hash) return res + colorMap[h.id] + ";";
+    lastMap = h.id;
+  }
+  if (lastMap >= MAX_COLOR_ID) lastMap = 0;
+  const newEntry = {hash:hash, id: (lastMap+1)};
+  mapedHash.push(newEntry);
+  return res + colorMap[newEntry.id] + ";";
+}
+
+export function switchTheme(e) {
+  document.getElementsByTagName("body")[0].classList.toggle("lightTheme")
+}
