@@ -1,5 +1,5 @@
 import { register } from "./chat.service.js";
-import { setNewCookie } from "./cookie.service.js";
+import { setNewCookie, setSessionCookie } from "./cookie.service.js";
 import {
   getEmptyContent,
   appendChild,
@@ -94,10 +94,10 @@ function pageRegisterSent(id, fullName, nickname, pw) {
   register(id, pw, nickname, fullName).then((res) =>{
     res.json().then((data) => {
       if (data.code === 200) {
-        setNewCookie(ENUM_SET.COOKIE_SET.token, data.token, 1);
-        setNewCookie(ENUM_SET.COOKIE_SET.username, nickname, 1);
-        setNewCookie(ENUM_SET.COOKIE_SET.userId, id, 1);
-        setNewCookie(ENUM_SET.COOKIE_SET.hash, data.hash, 1);
+        setSessionCookie(ENUM_SET.COOKIE_SET.token, data.token);
+        setSessionCookie(ENUM_SET.COOKIE_SET.username, nickname);
+        setSessionCookie(ENUM_SET.COOKIE_SET.userId, id);
+        setSessionCookie(ENUM_SET.COOKIE_SET.hash, data.hash);
         rerender(ENUM_SET.STATES.Chat, undefined, data.hash);
       } else {
 

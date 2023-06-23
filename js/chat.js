@@ -164,7 +164,7 @@ function safeSwitchTheme(){
   {
     targetTheme = dark;
   }
-  setNewCookie(key, targetTheme);
+  setNewCookie(key, targetTheme, 30);
   switchTheme();
 }
 
@@ -194,7 +194,7 @@ function onLogout() {
 function cleanCache(errorMsg, successMsg) {
   deleteCookie(ENUM_SET.COOKIE_SET.hash);
   deleteCookie(ENUM_SET.COOKIE_SET.token);
-  setNewCookie(ENUM_SET.COOKIE_SET.userId, "", -1);
+  deleteCookie(ENUM_SET.COOKIE_SET.userId);
   rerender(ENUM_SET.STATES.Login, errorMsg, undefined, successMsg);
 }
 

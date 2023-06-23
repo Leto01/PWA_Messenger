@@ -40,7 +40,7 @@ function initApp() {
 }
 
 function updateApp(newState, loginerror, userhash, successMsg) {
-  setNewCookie(ENUM_SET.COOKIE_SET.state, newState, 10);
+  setNewCookie(ENUM_SET.COOKIE_SET.state, newState, 30);
   state = newState;
   loginErrorMessage = loginerror;
   logoutSuccess = successMsg;

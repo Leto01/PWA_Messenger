@@ -8,7 +8,7 @@ export function setNewCookie(key, value, expireInDays) {
 }
 
 export function setSessionCookie(key, value){
-  document.cookie = `${key}=${value}`;
+  setNewCookie(key, value);
 }
 
 export function getCookie(cname) {
