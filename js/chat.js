@@ -134,6 +134,15 @@ function createDropdownContent() {
   let slider = createElement("span", "slider dropdownContext");
   appendChild(toggleTheme, [checkBox, slider]);
 
+
+  let help = createElement("div", "helpBtn dropdownContext");
+  let helpTxt = createElement("h3", "helpTitle dropdownContext");
+  helpTxt.innerText = "Help";
+  let helpIcon = createElement("img", "lightIcon");
+  helpIcon.setAttribute("src", "./assets/help.svg");
+  helpIcon.addEventListener("click", openHelpPage);
+  appendChild(help, [helpTxt, helpIcon]);
+
   let logout = createElement("div", "logoutBtn dropdownContext");
   let logoutIco = createElement("img", "logoutIco lightIcon");
   logoutIco.setAttribute("src", "../assets/logout.svg");
@@ -150,8 +159,13 @@ function createDropdownContent() {
   deregIco.addEventListener("click", onDeregsiter);
   appendChild(deregister, [deregisterTitle, deregIco]);
 
-  appendChild(container, [toggleContainer, logout, deregister]);
+  appendChild(container, [toggleContainer, help, logout, deregister]);
   return container;
+}
+
+function openHelpPage(){
+  const helpUrl = "https://github.com/Leto01/PWA_Messenger#help";
+  window.open(helpUrl, "_blank");
 }
 
 function safeSwitchTheme(){

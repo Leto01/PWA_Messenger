@@ -13,13 +13,13 @@ It is build using JS DOM, HTML and CSS and connects to a php service build by th
 
 This help explains the basic functionality of this application.
 
-1.[Log in](#login)
-1.[Register](#register)
-1.[First message](#first-message)
-1.[Send a photo](#send-a-photo)
-1.[Switch theme](#switch-theme)
-1.[Log out](#logout)
-1.[Delete account](#delete-account)
+1. [Log in](#login)
+2. [Register](#register)
+3. [First message](#first-message)
+4. [Send a photo](#send-a-photo)
+5. [Switch theme](#switch-theme)
+6. [Log out](#logout)
+7. [Delete account](#delete-account)
 
 ## How to use PWAM
 
