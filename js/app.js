@@ -14,18 +14,18 @@ var logoutSuccess = false;
 if (getCookie(ENUM_SET.COOKIE_SET.token) !== "")
   state = getCookie(ENUM_SET.COOKIE_SET.state) + 0;
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("/sw.js")
-    .then((reg) => {
-      loginErrorMessage = "Success SW Register";
-    })
-    .catch((error) => {
-      loginErrorMessage = "FAILED: SW Register";
-    });
-}
-
 window.addEventListener("load", (e) => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((reg) => {
+        loginErrorMessage = "Success SW Register";
+      })
+      .catch((error) => {
+        loginErrorMessage = "FAILED: SW Register";
+      });
+  }
+
   initApp();
   handleTheme();
 });
@@ -67,8 +67,11 @@ function renderPage(userhash) {
 
 const handleTheme = () => {
   const cachedTheme = getCookie(ENUM_SET.COOKIE_SET.theme);
-  if (cachedTheme == ENUM_SET.THEMES.light && !document.body.classList.contains("lightTheme")) {
-    console.log("Switching Theme")
+  if (
+    cachedTheme == ENUM_SET.THEMES.light &&
+    !document.body.classList.contains("lightTheme")
+  ) {
+    console.log("Switching Theme");
     switchTheme();
   }
 };
