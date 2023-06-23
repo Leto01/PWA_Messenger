@@ -29,14 +29,14 @@ function getFeeldSet() {
   h3Title.innerText = "Register here";
   appendChild(form, [div]);
   appendChild(container, [h3Title, form])
-  const inputName = makeInput("text", "userId", "HS-ID (=8 Char)", 8);
+  const inputName = makeInput("text", "userId", "HS-ID", 8);
   const inputFullName = makeInput("text", "fullName", "Full Name", 1);
   const inputNickName = makeInput("text", "nickname", "Nickname", 1);
   const brk = createElement("br");
   const inputPassword = makeInput(
     "password",
     "password",
-    "Password (>5 Char)",
+    "Password",
     5
   );
   const inputPasswordRepeat = makeInput(
