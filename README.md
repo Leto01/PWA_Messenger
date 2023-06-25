@@ -9,7 +9,20 @@
 This is a chat app build as an assignement of the course **Mobile Apps and UX**. It is designed to run as a PWA.
 It is build using JS DOM, HTML and CSS and connects to a php service build by the professor of the course.
 
-## Help
+It uses cachingstrategies to cache static elements required for running the app. This is done to make the app offline available.
+Used are two cachingstrategies. cache-first with network fallback is used for caching the application. Networkfirst with cache fallback is used for the send messages.
+Images, send in the chat, are not beeing cached, because they would use up too much space in the cache. 
+
+## 🏃‍♂️ Runing it localy
+You can run this application using the Live Server in Visual Studio Code. Just clone the repository, navigate into the root folder of this project and start the Live Server.
+If you want to check it out, without cloning the project, you can check it out on this site:
+
+https://pwamessenger-production.up.railway.app/
+
+There is a deployment pipeline set to this service, which pushes any changes of the master branch to this service.
+
+
+## 📑 Help
 
 This help explains the basic functionality of this application.
 
