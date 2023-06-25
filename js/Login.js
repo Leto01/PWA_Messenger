@@ -54,7 +54,7 @@ function validateLoginResponse(data, uid) {
 }
 
 function pageLoginSent(pw, id) {
-  login(id, pw)
+  login(id.trim(), pw)
     .then((r) => {
       r.json().then((data) => {
         validateLoginResponse(data, id);
