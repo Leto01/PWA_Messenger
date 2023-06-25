@@ -164,7 +164,7 @@ function createDropdownContent() {
 }
 
 function openHelpPage(){
-  const helpUrl = "https://github.com/Leto01/PWA_Messenger/blob/master/README.md#-help";
+  const helpUrl = "https://github.com/Leto01/PWA_Messenger#-help";
   window.open(helpUrl, "_blank");
 }
 
